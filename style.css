@@ -1,0 +1,252 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    font-family: sans-serif;
+}
+
+body {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    background-color: rgb(15, 19, 32);
+    color: white;
+    position: relative;
+}
+
+.ctn {
+    width: 90%;
+    margin: 0 auto;
+}
+
+header {
+    background-color: rgb(29, 36, 58);
+    padding: 20px 0;
+    & .ctn {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        & .title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        & #search {
+            width: 200px;
+            height: 30px;
+            border-radius: 5px;
+        }
+    }
+}
+
+main {
+    padding: 15px 0;
+    min-height: calc(100vh - 146px);
+    & .ctn {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+        & .card {
+            width: 170px;
+            border-radius: 10px;
+            overflow: hidden;
+            & .card_header {
+                position: relative;
+                padding: 10px 0;
+                height: 30px;
+                background-color: rgb(29, 36, 58);
+                & #number_pokemon {
+                    position: absolute;
+                    top: 6px;
+                    left: 10px;
+                }
+                & #name_pokemon {
+                    position: absolute;
+                    top: 6px;
+                    left: 50%;
+                    transform: translate(-50%);
+                }
+            }
+            & .card_img_pokemon_ctn {
+                height: 140px;
+                background-color: lightgrey;
+                display: flex;
+                justify-content: center;
+                align-items: end;
+            }
+            & .card_footer {
+                background-color: rgb(29, 36, 58);
+                display: flex;
+                justify-content: center;
+                padding: 10px 0;
+                gap: 10px;
+                align-items: center;
+    
+                & .icon_type_of_pokemon {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+        }
+    } 
+}
+
+footer {
+    background-color: rgb(29, 36, 58);
+    padding: 20px 0;
+    text-align: center;
+}
+
+.card_overlay_ctn {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    & .card_overlay {
+        position: absolute;
+        width: 90%;
+        max-width: 350px;
+        height: 500px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid blue;
+        border-radius: 10px;
+        overflow: hidden;
+        & .card_overlay_header {
+            background-color: rgb(15, 19, 32);
+            height: 50px;
+            position: relative;
+            & #overlay_number_pokemon {
+                position: absolute;
+                top: 16px;
+                left: 10px;
+            }
+            & #overlay_name_pokemon {
+                position: absolute;
+                top: 16px;
+                left: 50%;
+                transform: translate(-50%);
+            }
+        }
+        & .overlay_card_img_pokemon_ctn {
+            background-color: lightgray;
+            display: flex;
+            justify-content: center;
+            align-items: end;
+            height: 140px;
+            & img {
+                height: 130px;
+            }
+        }
+        & .overlay_card_type_of_pokemon_ctn {
+            background-color: rgb(15, 19, 32);
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            & .icon_type_of_pokemon {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        & .overlay_card_menu {
+            background-color: rgb(29, 36, 58);
+            display: flex;
+            gap: 2px;
+
+            & .overlay_menu_link {
+                background-color: rgb(37, 61, 65);
+                width: 33.3%;
+                text-align: center;
+                padding: 10px 0;
+                border-bottom: 1px solid transparent;
+            }
+        }
+        & .overlay_card_info {
+            background-color: rgb(29, 36, 58);
+            padding: 15px;
+            height: 220px;
+            & .overlay_info_main {
+                display: none;
+                & .description {
+                    width: 40%;
+                    display: inline-block;
+                    margin-bottom: 8px;
+                }
+            }
+            & .overlay_info_stats {
+                display: none;
+                flex-direction: column;
+                gap: 15px;
+
+                & div {
+                    display: flex;
+                    gap: 15px;
+                    justify-content: space-between;
+                    & span {
+                        display: block;
+                        width: 40%;
+                    }
+                    & .process_line {
+                        width: 55%;
+                        border: 3px solid black;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        & .line_to_fill {
+                            width: 20%;
+                            border-top-right-radius: 10px;
+                            border-bottom-right-radius: 10px;
+                            background-color: red;
+                        }
+                    }
+                }
+            }
+            & .evo_chain {
+                margin-top: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                & .evo_chain_ctn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    & .evo_pokemon {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        & img {
+                            height: 70px;
+                            width: 70px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 400px) {
+    .card_overlay_ctn {
+        & .card_overlay {
+            & .overlay_card_info {
+                & .evo_chain {
+                    margin-top: 0px;
+                    & .evo_chain_ctn {
+                        flex-wrap: wrap;
+                    }
+                }
+            }
+        }
+    }
+}
