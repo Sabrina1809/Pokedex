@@ -56,20 +56,15 @@ main {
             border-radius: 10px;
             overflow: hidden;
             & .card_header {
-                position: relative;
-                padding: 10px 0;
-                height: 30px;
                 background-color: rgb(29, 36, 58);
+                display: flex;
+                flex-direction: column;
+                padding: 5px;
                 & #number_pokemon {
-                    position: absolute;
-                    top: 6px;
-                    left: 10px;
+                    align-self: start;
                 }
                 & #name_pokemon {
-                    position: absolute;
-                    top: 6px;
-                    left: 50%;
-                    transform: translate(-50%);
+                    align-self: center;
                 }
             }
             & .card_img_pokemon_ctn {

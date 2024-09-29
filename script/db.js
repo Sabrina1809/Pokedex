@@ -1,6 +1,8 @@
 let allPokemonNameAndUrl = []; 
 let allPokemonDetails = [];
+let allPokemonMoreDetails = [];
 let filteredPokemon = [];
+
 
 async function getData() {
     let responseAllPokemon = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
@@ -9,23 +11,68 @@ async function getData() {
 
     let promisesSinglePokemon = allPokemonNameAndUrl.map(pokemon => fetch(pokemon.url).then(res => res.json()));
     allPokemonDetails = await Promise.all(promisesSinglePokemon); 
+    console.log(allPokemonDetails)
 
-    filterPokemon(allPokemonDetails, "si")
+    let promisesPokempnEggGroup = allPokemonDetails.map(pokemon => fetch(pokemon.species.url).then(res => res.json()));
+    allPokemonMoreDetails = await Promise.all(promisesPokempnEggGroup); 
+    console.log(allPokemonMoreDetails)
+
+    filterPokemon(allPokemonDetails, "cha", allPokemonMoreDetails)
 }
 
-async function filterPokemon(allPokemonDetails, string) {
+async function filterPokemon(allPokemonDetails, string, allPokemonMoreDetails) {
     for (let i = 0; i < allPokemonDetails.length; i++) {
         if (allPokemonDetails[i].name.includes(string) && allPokemonDetails[i].is_default == true) {
-            let imgUrl = allPokemonDetails[i].sprites.other.home.front_default;
-            if (imgUrl === null) {
-                imgUrl = "./img/icons8-pikachu-pokemon-100.png"
-            }
-            filteredPokemon.push({"number" : allPokemonDetails[i].id, "name" : allPokemonDetails[i].name, "img" : imgUrl})
+            filteredPokemon.push({
+                "id" : allPokemonDetails[i].id + allPokemonDetails[i].name,
+                "url" : allPokemonDetails[i].species.url,
+                "weight" : allPokemonDetails[i].weight,
+                "height" : allPokemonDetails[i].height,
+                "number" : allPokemonDetails[i].id, 
+                "name" : allPokemonDetails[i].name, 
+                "img" : allPokemonDetails[i].sprites.other.home.front_default,
+                "types" : checkPokemonType(i), 
+                "color" : allPokemonMoreDetails[i].color.name,
+                "base_experience" : allPokemonDetails[i].base_experience,
+                "abilities" : checkPokemonAbilities(i),
+                "stats" : checkPokemonStats(i),
+                "evochain" : await checkEvoChain(i)
+            })
         }
     }
     filteredPokemon = filteredPokemon
     renderFilteredPokemon(filteredPokemon)
     console.log(filteredPokemon)
+}
+
+function checkPokemonType(i) {
+    let pokemonTypeArray = [];
+    for (let j = 0; j < allPokemonDetails[i].types.length; j++) {
+        pokemonTypeArray.push(allPokemonDetails[i].types[j].type.name)
+    }
+    return pokemonTypeArray
+}
+
+function checkPokemonAbilities(i) {
+    let pokemonAbilitiesArray = [];
+    for (let j = 0; j < allPokemonDetails[i].abilities.length; j++) {
+        pokemonAbilitiesArray.push(allPokemonDetails[i].abilities[j].ability.name)
+    }
+    return pokemonAbilitiesArray
+}
+
+function checkPokemonStats(i) {
+    let pokemonStatsArray = [];
+    for (let j = 0; j < allPokemonDetails[i].stats.length; j++) {
+        pokemonStatsArray.push({"name" : allPokemonDetails[i].stats[j].stat.name, "base_stat" : allPokemonDetails[i].stats[j].base_stat})
+    }
+    return pokemonStatsArray
+}
+
+async function checkEvoChain(i) {
+    let responseEvoChain = await fetch(allPokemonMoreDetails[i].evolution_chain.url);
+    let evochain = await responseEvoChain.json();
+    return evochain
 }
 
 async function renderFilteredPokemon(filteredPokemon) {
@@ -40,7 +87,7 @@ function cardTemplate(numberToShow) {
 
     for (let i = lastShownNumber; i < numberToShow; i++) {
         document.getElementById("cards_area").innerHTML += `
-            <div class="card" id="${filteredPokemon[i].number + filteredPokemon[i].name}">
+            <div class="card" id="${filteredPokemon[i].id}">
                 <div class="card_header">
                     <span id="number_pokemon">#${filteredPokemon[i].number}</span>
                     <span id="name_pokemon">${filteredPokemon[i].name}</span>
