@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Pokedex</title>
 </head>
-<body>
+<body onload="getData()">
     <header>
         <div class="ctn">
             <div class="title">
@@ -18,8 +18,8 @@
         </div>
     </header>
     <main>
-        <div class="ctn">
-            <div class="card">
+        <div id="cards_area" class="ctn">
+            <!-- <div class="card">
                 <div class="card_header">
                     <span id="number_pokemon">#1</span>
                     <span id="name_pokemon">Bulbasaur</span>
@@ -96,7 +96,7 @@
                     <img class="icon_type_of_pokemon" src="./img/icons8-blatt-100.png" alt="Blatt">
                     <img class="icon_type_of_pokemon" src="./img/icons8-feuer-60.png" alt="Feuer">
                 </div>
-            </div>
+            </div> -->
         </div>
     </main>
     <footer>
@@ -104,6 +104,7 @@
             © Sabrina Fritz 2024
         </div>
     </footer>
+    <div id="show_more" class="0" onclick="showMore()">+</div>
     <div class="card_overlay_ctn">
         <div class="card_overlay">
             <div class="card_overlay_header">
@@ -200,5 +201,8 @@
             </div>
         </div>
     </div>
+    <script src="./script/db.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+

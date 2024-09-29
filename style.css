@@ -12,7 +12,7 @@ body {
     min-width: 320px;
     min-height: 100vh;
     background-color: rgb(15, 19, 32);
-    color: white;
+    color: whitesmoke;
     position: relative;
 }
 
@@ -78,6 +78,11 @@ main {
                 display: flex;
                 justify-content: center;
                 align-items: end;
+
+                & .card_img_pokemon {
+                    height: 140px;
+                    width: auto;
+                }
             }
             & .card_footer {
                 background-color: rgb(29, 36, 58);
@@ -103,7 +108,7 @@ footer {
 }
 
 .card_overlay_ctn {
-    display: flex;
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -233,6 +238,30 @@ footer {
                 }
             }
         }
+    }
+}
+
+#show_more {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 70px;
+    right: 2%;
+    font-size: 50px;
+    border: 1px solid white;
+    background-color: rgba(255, 255, 255, 0.103);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 0 5px black inset;
+    }
+
+    &:active {
+        scale: 0.95;
     }
 }
 
