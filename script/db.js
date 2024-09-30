@@ -13,11 +13,11 @@ async function getData() {
     allPokemonDetails = await Promise.all(promisesSinglePokemon); 
     console.log(allPokemonDetails)
 
-    let promisesPokempnEggGroup = allPokemonDetails.map(pokemon => fetch(pokemon.species.url).then(res => res.json()));
-    allPokemonMoreDetails = await Promise.all(promisesPokempnEggGroup); 
+    let promisesallPokemonMoreDetails = allPokemonDetails.map(pokemon => fetch(pokemon.species.url).then(res => res.json()));
+    allPokemonMoreDetails = await Promise.all(promisesallPokemonMoreDetails); 
     console.log(allPokemonMoreDetails)
 
-    filterPokemon(allPokemonDetails, "cha", allPokemonMoreDetails)
+    filterPokemon(allPokemonDetails, "sa", allPokemonMoreDetails)
 }
 
 async function filterPokemon(allPokemonDetails, string, allPokemonMoreDetails) {
@@ -44,6 +44,7 @@ async function filterPokemon(allPokemonDetails, string, allPokemonMoreDetails) {
     renderFilteredPokemon(filteredPokemon)
     console.log(filteredPokemon)
 }
+
 
 function checkPokemonType(i) {
     let pokemonTypeArray = [];
@@ -83,32 +84,43 @@ async function renderFilteredPokemon(filteredPokemon) {
 
 function cardTemplate(numberToShow) {
     let lastShownNumber = Number(document.getElementById("show_more").className);
-    console.log(`Anzahl zum Laden: ${numberToShow}`)
-
+    // console.log(`Anzahl zum Laden: ${numberToShow}`)
     for (let i = lastShownNumber; i < numberToShow; i++) {
+        let card_footer_innerHTML = setTypesToPokemon(filteredPokemon, i);
         document.getElementById("cards_area").innerHTML += `
             <div class="card" id="${filteredPokemon[i].id}">
                 <div class="card_header">
                     <span id="number_pokemon">#${filteredPokemon[i].number}</span>
                     <span id="name_pokemon">${filteredPokemon[i].name}</span>
                 </div>
-                <div class="card_img_pokemon_ctn">
+                <div class="card_img_pokemon_ctn ${filteredPokemon[i].types[0]}">
                     <img class="card_img_pokemon" src="${filteredPokemon[i].img}" alt="${filteredPokemon[i].name}">
                 </div>
-                <div class="card_footer">
-                    <img class="icon_type_of_pokemon" src="./img/icons8-blatt-100.png" alt="Blatt">
-                    <img class="icon_type_of_pokemon" src="./img/icons8-feuer-60.png" alt="Feuer">
+                <div id="card_footer_${filteredPokemon[i].id}" class="card_footer">
+                    ${card_footer_innerHTML}
                 </div>
             </div>`
     }
 }
 
+function setTypesToPokemon(filteredPokemon, i) {
+    let typeImgCollection = "";
+    for (let j = 0; j < filteredPokemon[i].types.length; j++) {
+        
+        typeImgCollection += `
+            <img class="icon_type_of_pokemon ${filteredPokemon[i].types[j]}" src="./img/types/${filteredPokemon[i].types[j]}.svg" alt="${filteredPokemon[i].types[j]}">
+            `;
+    }
+    typeImgCollection = typeImgCollection
+    return typeImgCollection
+}
+
 function checkNumberToShow(filteredPokemon) {
     let number;
     let lastShownNumber = Number(document.getElementById("show_more").className);
-    console.log(`aktuell angezeigte Pokemon: ${lastShownNumber}`);
+    // console.log(`aktuell angezeigte Pokemon: ${lastShownNumber}`);
     let remainingPokemon = filteredPokemon.length - lastShownNumber;
-    console.log(`Verbleibende Pokemon: ${remainingPokemon}`);
+    // console.log(`Verbleibende Pokemon: ${remainingPokemon}`);
         if (remainingPokemon > 20) {
             number = lastShownNumber + 20
         } else {
