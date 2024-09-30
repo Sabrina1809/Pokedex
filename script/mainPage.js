@@ -171,23 +171,9 @@ function fillOverlay(indexOfFilteredPokemon) {
     document.getElementById("overlay_number_pokemon").innerText = `#${filteredPokemon[indexOfFilteredPokemon].number}`
     document.getElementById("overlay_name_pokemon").innerText = `${filteredPokemon[indexOfFilteredPokemon].name}`
     document.getElementById("imgOverlay").src = `${filteredPokemon[indexOfFilteredPokemon].img}`
-    // let card_footer_innerHTML = setTypesToPokemonOverlay(filteredPokemon, indexOfFilteredPokemon);
-    document.getElementById("overlay_card_img_pokemon_ctn").classList.add = `${filteredPokemon[indexOfFilteredPokemon].types[0]}`;
-    // document.getElementById(`overlay_card_img_pokemon_ctn${filteredPokemon[indexOfFilteredPokemon].id}`)
-    // document.getElementById("overlay_card_type_of_pokemon_ctn").innerHTML = card_footer_innerHTML;
+    document.getElementById("overlay_card_img_pokemon_ctn").classList.add = `${filteredPokemon[indexOfFilteredPokemon].types[0]}`;    
 }
 
-// function setTypesToPokemonOverlay(filteredPokemon, indexOfFilteredPokemon) {
-//     let typeImgCollection = "";
-//     for (let j = 0; j < filteredPokemon[indexOfFilteredPokemon].types.length; j++) {
-//         typeImgCollection += `
-//               <img class="icon_type_of_pokemon ${filteredPokemon[indexOfFilteredPokemon].types[j]}" src="./img/types/${filteredPokemon[indexOfFilteredPokemon].types[j]}.svg" alt="${filteredPokemon[indexOfFilteredPokemon].name}">
-//             `;
-//     }
-//     typeImgCollection = typeImgCollection
-//     document.getElementById("overlay_card_img_pokemon_ctn").classList.add(`${filteredPokemon[indexOfFilteredPokemon].types[0]}`);
-//     return typeImgCollection
-// }
 
 function checkIndexOfFilteredPokemon(thisPokemon, filteredPokemon) {
     for (let i = 0; i < filteredPokemon.length; i++) {
