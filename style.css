@@ -22,8 +22,15 @@ body {
 }
 
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     background-color: rgb(29, 36, 58);
+    border-bottom: 0.5px rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
     padding: 20px 0;
+    z-index: 20;
     & .ctn {
         display: flex;
         flex-direction: row;
@@ -43,8 +50,9 @@ header {
 }
 
 main {
+    margin-top: 88px;
     padding: 15px 0;
-    min-height: calc(100vh - 146px);
+    min-height: calc(100vh - 58px);
     & .ctn {
         display: flex;
         flex-wrap: wrap;
@@ -55,6 +63,8 @@ main {
             width: 170px;
             border-radius: 10px;
             overflow: hidden;
+            transition: all 0.2s ease-in-out;
+            border: 0.5px solid transparent;
             & .card_header {
                 background-color: rgb(29, 36, 58);
                 display: flex;
@@ -80,6 +90,7 @@ main {
                     background-color: transparent;
                     height: 140px;
                     width: auto;
+                    transition: all 0.2s ease-in-out;
                 }
             }
             & .card_footer {
@@ -102,6 +113,10 @@ main {
             &:hover .card_img_pokemon_ctn {
                 background-image: radial-gradient(circle, rgba(255,255,255,1) 0%, transparent 100%);
             }
+            &:hover .card_img_pokemon {
+                scale: 1.1;
+                filter: drop-shadow(0px 5px 8px rgba(0, 0, 0, 1));
+            }
             &:hover #name_pokemon {
                 scale: 1.2;
                 text-shadow: 0 0 5px black;
@@ -117,7 +132,8 @@ main {
             }
             &:hover {
                 cursor: pointer;
-                box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+                border: 0.5px solid rgba(138, 138, 138, 0.5);
             }
         }
     } 
@@ -127,16 +143,19 @@ footer {
     background-color: rgb(29, 36, 58);
     padding: 20px 0;
     text-align: center;
+    border-top: 0.5px rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
 }
 
 .card_overlay_ctn {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 30;
     & .card_overlay {
         position: absolute;
         width: 90%;
@@ -145,11 +164,12 @@ footer {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        border: 1px solid blue;
+        border: 1px solid black;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.527);
         border-radius: 10px;
         overflow: hidden;
         & .card_overlay_header {
-            background-color: rgb(15, 19, 32);
+            background-color: rgb(29, 36, 58);
             height: 50px;
             position: relative;
             & #overlay_number_pokemon {
@@ -165,7 +185,6 @@ footer {
             }
         }
         & .overlay_card_img_pokemon_ctn {
-            background-color: lightgray;
             display: flex;
             justify-content: center;
             align-items: end;
@@ -175,17 +194,42 @@ footer {
             }
         }
         & .overlay_card_type_of_pokemon_ctn {
-            background-color: rgb(15, 19, 32);
-            height: 50px;
+            background-color: rgb(29, 36, 58);
+            /* height: 50px; */
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            padding: 10px 0;
             & .icon_type_of_pokemon {
                 width: 40px;
                 height: 40px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+                border-radius: 50%;
+                padding: 5px;
+             
             }
         }
+/* 
+        & .card_footer {
+            background-color: rgb(29, 36, 58);
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            gap: 15px;
+            align-items: center;
+
+            & .icon_type_of_pokemon {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+                border-radius: 50%;
+                padding: 5px;
+                width: 40px;
+                height: 40px;
+            } */
+
+
+
+
         & .overlay_card_menu {
             background-color: rgb(29, 36, 58);
             display: flex;
@@ -260,6 +304,9 @@ footer {
                 }
             }
         }
+    }
+    &:hover {
+        cursor: pointer;
     }
 }
 

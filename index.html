@@ -40,16 +40,16 @@
         </div>
     </footer>
     <div id="show_more" class="0" onclick="showMore()">+</div>
-    <div class="card_overlay_ctn">
+    <div onclick="closeOverlay(event)" id="card_overlay_ctn" class="card_overlay_ctn">
         <div class="card_overlay">
             <div class="card_overlay_header">
                 <span id="overlay_number_pokemon">#1</span>
                 <span id="overlay_name_pokemon">Bulbasaur</span>
             </div>
-            <div class="overlay_card_img_pokemon_ctn">
-                <img src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
+            <div id="overlay_card_img_pokemon_ctn" class="overlay_card_img_pokemon_ctn">
+                <img id="imgOverlay" src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
             </div>
-            <div class="overlay_card_type_of_pokemon_ctn">
+            <div id="overlay_card_type_of_pokemon_ctn" class="overlay_card_type_of_pokemon_ctn">
                 <img class="icon_type_of_pokemon" src="./img/icons8-blatt-100.png" alt="Blatt">
                 <img class="icon_type_of_pokemon" src="./img/icons8-feuer-60.png" alt="Feuer">
             </div>
@@ -136,7 +136,8 @@
             </div>
         </div>
     </div>
-    <script src="./script/db.js"></script>
+    <script src="./script/mainPage.js"></script>
+    <script src="./script/overlay.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

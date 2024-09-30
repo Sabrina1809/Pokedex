@@ -22,7 +22,7 @@ async function getData(filter) {
 function getFilter() {
     let filter; 
     document.getElementById("cards_area").innerHTML = "";
-    document.getElementById("show_more").className = 0
+    document.getElementById("show_more").className = 0;
     let input = document.getElementById("search").value;
     filteredPokemon = [];
     if (input == "") {
@@ -59,7 +59,6 @@ async function filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails) {
     renderFilteredPokemon(filteredPokemon)
     console.log(filteredPokemon)
 }
-
 
 function checkPokemonType(i) {
     let pokemonTypeArray = [];
@@ -98,12 +97,12 @@ async function renderFilteredPokemon(filteredPokemon) {
 }
 
 function cardTemplate(numberToShow) {
+    disableButton(numberToShow)
     let lastShownNumber = Number(document.getElementById("show_more").className);
-    // console.log(`Anzahl zum Laden: ${numberToShow}`)
     for (let i = lastShownNumber; i < numberToShow; i++) {
         let card_footer_innerHTML = setTypesToPokemon(filteredPokemon, i);
         document.getElementById("cards_area").innerHTML += `
-            <div class="card" id="${filteredPokemon[i].id}">
+            <div class="card" onclick="openOverlay(event)" id="${filteredPokemon[i].id}">
                 <div class="card_header">
                     <span id="number_pokemon">#${filteredPokemon[i].number}</span>
                     <span id="name_pokemon">${filteredPokemon[i].name}</span>
@@ -121,7 +120,6 @@ function cardTemplate(numberToShow) {
 function setTypesToPokemon(filteredPokemon, i) {
     let typeImgCollection = "";
     for (let j = 0; j < filteredPokemon[i].types.length; j++) {
-        
         typeImgCollection += `
             <img class="icon_type_of_pokemon ${filteredPokemon[i].types[j]}" src="./img/types/${filteredPokemon[i].types[j]}.svg" alt="${filteredPokemon[i].types[j]}">
             `;
@@ -133,9 +131,7 @@ function setTypesToPokemon(filteredPokemon, i) {
 function checkNumberToShow(filteredPokemon) {
     let number;
     let lastShownNumber = Number(document.getElementById("show_more").className);
-    console.log(`aktuell angezeigte Pokemon: ${lastShownNumber}`);
     let remainingPokemon = filteredPokemon.length - lastShownNumber;
-    console.log(`Verbleibende Pokemon: ${remainingPokemon}`);
         if (remainingPokemon > 20) {
             number = lastShownNumber + 20
         } else {
@@ -148,4 +144,55 @@ function showMore() {
     let numberToShow = checkNumberToShow(filteredPokemon)
     cardTemplate(numberToShow)
     document.getElementById("show_more").className = numberToShow;
+
+}
+
+function disableButton(numberToShow) {
+    if( numberToShow == filteredPokemon.length) {
+        document.getElementById("show_more").style.pointerEvents = "none";
+        document.getElementById("show_more").style.opacity = "0.25";
+    } else {
+        document.getElementById("show_more").style.pointerEvents = "auto";
+        document.getElementById("show_more").style.opacity = "1";
+    }
+}
+
+function openOverlay(e) {
+    let thisPokemon = checkPokemonId(e) 
+    document.getElementById("card_overlay_ctn").style.display = "flex"
+    let indexOfFilteredPokemon = checkIndexOfFilteredPokemon(thisPokemon, filteredPokemon)
+    console.log(indexOfFilteredPokemon)
+
+    fillOverlay(indexOfFilteredPokemon) 
+
+}
+
+function fillOverlay(indexOfFilteredPokemon) {
+    document.getElementById("overlay_number_pokemon").innerText = `#${filteredPokemon[indexOfFilteredPokemon].number}`
+    document.getElementById("overlay_name_pokemon").innerText = `${filteredPokemon[indexOfFilteredPokemon].name}`
+    document.getElementById("imgOverlay").src = `${filteredPokemon[indexOfFilteredPokemon].img}`
+    // let card_footer_innerHTML = setTypesToPokemonOverlay(filteredPokemon, indexOfFilteredPokemon);
+    document.getElementById("overlay_card_img_pokemon_ctn").classList.add = `${filteredPokemon[indexOfFilteredPokemon].types[0]}`;
+    // document.getElementById(`overlay_card_img_pokemon_ctn${filteredPokemon[indexOfFilteredPokemon].id}`)
+    // document.getElementById("overlay_card_type_of_pokemon_ctn").innerHTML = card_footer_innerHTML;
+}
+
+// function setTypesToPokemonOverlay(filteredPokemon, indexOfFilteredPokemon) {
+//     let typeImgCollection = "";
+//     for (let j = 0; j < filteredPokemon[indexOfFilteredPokemon].types.length; j++) {
+//         typeImgCollection += `
+//               <img class="icon_type_of_pokemon ${filteredPokemon[indexOfFilteredPokemon].types[j]}" src="./img/types/${filteredPokemon[indexOfFilteredPokemon].types[j]}.svg" alt="${filteredPokemon[indexOfFilteredPokemon].name}">
+//             `;
+//     }
+//     typeImgCollection = typeImgCollection
+//     document.getElementById("overlay_card_img_pokemon_ctn").classList.add(`${filteredPokemon[indexOfFilteredPokemon].types[0]}`);
+//     return typeImgCollection
+// }
+
+function checkIndexOfFilteredPokemon(thisPokemon, filteredPokemon) {
+    for (let i = 0; i < filteredPokemon.length; i++) {
+        if (filteredPokemon[i].id == thisPokemon) {
+            return i
+        }
+    }
 }
