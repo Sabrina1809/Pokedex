@@ -3,8 +3,7 @@ let allPokemonDetails = [];
 let allPokemonMoreDetails = [];
 let filteredPokemon = [];
 
-
-async function getData() {
+async function getData(filter) {
     let responseAllPokemon = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
     let dataAllPokemon = await responseAllPokemon.json();
     allPokemonNameAndUrl = dataAllPokemon.results;
@@ -17,12 +16,28 @@ async function getData() {
     allPokemonMoreDetails = await Promise.all(promisesallPokemonMoreDetails); 
     console.log(allPokemonMoreDetails)
 
-    filterPokemon(allPokemonDetails, "sa", allPokemonMoreDetails)
+    filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails)
 }
 
-async function filterPokemon(allPokemonDetails, string, allPokemonMoreDetails) {
+function getFilter() {
+    let filter; 
+    document.getElementById("cards_area").innerHTML = "";
+    document.getElementById("show_more").className = 0
+    let input = document.getElementById("search").value;
+    filteredPokemon = [];
+    if (input == "") {
+        filter = ""
+    } else {
+        console.log(input)
+        filter = input;
+    }
+    filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails)
+}
+
+async function filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails) {
+    filteredPokemon = [];
     for (let i = 0; i < allPokemonDetails.length; i++) {
-        if (allPokemonDetails[i].name.includes(string) && allPokemonDetails[i].is_default == true) {
+        if (allPokemonDetails[i].name.includes(filter) && allPokemonDetails[i].is_default == true) {
             filteredPokemon.push({
                 "id" : allPokemonDetails[i].id + allPokemonDetails[i].name,
                 "url" : allPokemonDetails[i].species.url,
@@ -118,9 +133,9 @@ function setTypesToPokemon(filteredPokemon, i) {
 function checkNumberToShow(filteredPokemon) {
     let number;
     let lastShownNumber = Number(document.getElementById("show_more").className);
-    // console.log(`aktuell angezeigte Pokemon: ${lastShownNumber}`);
+    console.log(`aktuell angezeigte Pokemon: ${lastShownNumber}`);
     let remainingPokemon = filteredPokemon.length - lastShownNumber;
-    // console.log(`Verbleibende Pokemon: ${remainingPokemon}`);
+    console.log(`Verbleibende Pokemon: ${remainingPokemon}`);
         if (remainingPokemon > 20) {
             number = lastShownNumber + 20
         } else {

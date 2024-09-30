@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="style.css">
     <title>Pokedex</title>
 </head>
-<body onload="getData()">
+<body onload="getData('')">
     <header>
         <div class="ctn">
             <div class="title">
                 <img src="./img/icons8-pokéball-48.png" alt="Pokeball">
                 <p>Pokedex</p>
             </div>
-            <input type="text" name="search" id="search">
+            <input oninput="getFilter()" type="text" name="search" id="search">
         </div>
     </header>
     <main>

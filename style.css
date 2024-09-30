@@ -103,10 +103,21 @@ main {
                 background-image: radial-gradient(circle, rgba(255,255,255,1) 0%, transparent 100%);
             }
             &:hover #name_pokemon {
-                scale: 1.1;
+                scale: 1.2;
+                text-shadow: 0 0 5px black;
+            }
+            &:hover .card_footer {
+                & .icon_type_of_pokemon {
+                    box-shadow: 0 0 10px rgba(255,255,255, 0.25);
+                    border-radius: 50%;
+                    padding: 5px;
+                    width: 40px;
+                    height: 40px;
+                }
             }
             &:hover {
                 cursor: pointer;
+                box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
             }
         }
     } 
@@ -253,7 +264,7 @@ footer {
 }
 
 #show_more {
-    position: absolute;
+    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
