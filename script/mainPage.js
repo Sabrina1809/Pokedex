@@ -1,26 +1,40 @@
 let allPokemonNameAndUrl = []; 
 let allPokemonDetails = [];
 let allPokemonMoreDetails = [];
-let allPokemonEvoChain = []
+let allPokemon = [];
+// let allPokemonComplete = []
 let filteredPokemon = [];
 
 async function getData(filter) {
     let responseAllPokemon = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
     let dataAllPokemon = await responseAllPokemon.json();
     allPokemonNameAndUrl = dataAllPokemon.results;
-
     let promisesSinglePokemon = allPokemonNameAndUrl.map(pokemon => fetch(pokemon.url).then(res => res.json()));
     allPokemonDetails = await Promise.all(promisesSinglePokemon); 
-    console.log(allPokemonDetails)
+    // console.log(allPokemonDetails)
 
     let promisesallPokemonMoreDetails = allPokemonDetails.map(pokemon => fetch(pokemon.species.url).then(res => res.json()));
     allPokemonMoreDetails = await Promise.all(promisesallPokemonMoreDetails); 
-    console.log(allPokemonMoreDetails)
+    // console.log(allPokemonMoreDetails)
 
-    checkEvoChain()
-    console.log(allPokemonEvoChain)
+    // let allPokemonEvoChain = await checkEvoChain()
+    // console.log(allPokemonEvoChain)
+    allPokemon = await connectArrays(allPokemonDetails, allPokemonMoreDetails)
+    console.log(allPokemon[0])  
+    console.log(allPokemon);
+    
+    filterPokemon(allPokemon, filter)
+}
 
-    filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails)
+async function connectArrays(allPokemonDetails, allPokemonMoreDetails) {
+    let evochain = await checkEvoChain(allPokemonMoreDetails);
+
+    for (let i = 0; i < allPokemonDetails.length; i++) {
+        let singlePokemon = Object.assign({}, allPokemonDetails[i], allPokemonMoreDetails[i], evochain[i]);
+        allPokemon.push(singlePokemon);
+    }
+    allPokemon = allPokemon
+    return allPokemon
 }
 
 function getFilter() {
@@ -38,24 +52,24 @@ function getFilter() {
     filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails)
 }
 
-async function filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails) {
+async function filterPokemon(allPokemon, filter) {
     filteredPokemon = [];
-    for (let i = 0; i < allPokemonDetails.length; i++) {
-        if (allPokemonDetails[i].name.includes(filter) && allPokemonDetails[i].is_default == true) {
+    for (let i = 0; i < allPokemon.length; i++) {
+        if (allPokemon[i].name.includes(filter) && allPokemon[i].is_default == true) {
             filteredPokemon.push({
-                "id" : allPokemonDetails[i].id + allPokemonDetails[i].name,
-                "url" : allPokemonDetails[i].species.url,
-                "weight" : allPokemonDetails[i].weight,
-                "height" : allPokemonDetails[i].height,
-                "number" : allPokemonDetails[i].id, 
-                "name" : allPokemonDetails[i].name, 
-                "img" : allPokemonDetails[i].sprites.other.home.front_default,
+                "id" : allPokemon[i].id + allPokemon[i].name,
+                "url" : allPokemon[i].species.url,
+                "weight" : allPokemon[i].weight,
+                "height" : allPokemon[i].height,
+                "number" : allPokemon[i].id, 
+                "name" : allPokemon[i].name, 
+                "img" : allPokemon[i].sprites.other.home.front_default,
                 "types" : checkPokemonType(i), 
-                "color" : allPokemonMoreDetails[i].color.name,
-                "base_experience" : allPokemonDetails[i].base_experience,
+                "color" : allPokemon[i].color.name,
+                "base_experience" : allPokemon[i].base_experience,
                 "abilities" : checkPokemonAbilities(i),
                 "stats" : checkPokemonStats(i),
-                // "evochain" : await checkEvoChain(i)
+                // "evochain_step1" : 
             })
         }
     }
@@ -66,35 +80,36 @@ async function filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails) {
 
 function checkPokemonType(i) {
     let pokemonTypeArray = [];
-    for (let j = 0; j < allPokemonDetails[i].types.length; j++) {
-        pokemonTypeArray.push(allPokemonDetails[i].types[j].type.name)
+    for (let j = 0; j < allPokemonComplete[i].types.length; j++) {
+        pokemonTypeArray.push(allPokemonComplete[i].types[j].type.name)
     }
     return pokemonTypeArray
 }
 
 function checkPokemonAbilities(i) {
     let pokemonAbilitiesArray = [];
-    for (let j = 0; j < allPokemonDetails[i].abilities.length; j++) {
-        pokemonAbilitiesArray.push(allPokemonDetails[i].abilities[j].ability.name)
+    for (let j = 0; j < allPokemonComplete[i].abilities.length; j++) {
+        pokemonAbilitiesArray.push(allPokemonComplete[i].abilities[j].ability.name)
     }
     return pokemonAbilitiesArray
 }
 
 function checkPokemonStats(i) {
     let pokemonStatsArray = [];
-    for (let j = 0; j < allPokemonDetails[i].stats.length; j++) {
-        pokemonStatsArray.push({"name" : allPokemonDetails[i].stats[j].stat.name, "base_stat" : allPokemonDetails[i].stats[j].base_stat})
+    for (let j = 0; j < allPokemonComplete[i].stats.length; j++) {
+        pokemonStatsArray.push({"name" : allPokemonComplete[i].stats[j].stat.name, "base_stat" : allPokemonComplete[i].stats[j].base_stat})
     }
     return pokemonStatsArray
 }
 
-async function checkEvoChain() {
+async function checkEvoChain(allPokemonMoreDetails) {
+    let evochainArray = [];
     for (let i = 0; i < allPokemonMoreDetails.length; i++) {
         let responseEvoChain = await fetch(allPokemonMoreDetails[i].evolution_chain.url);
         let evochain = await responseEvoChain.json();
-        allPokemonEvoChain.push(evochain)
+        evochainArray.push(evochain)
     }
-    allPokemonEvoChain = allPokemonEvoChain
+    return evochainArray
 }
 
 async function renderFilteredPokemon(filteredPokemon) {
