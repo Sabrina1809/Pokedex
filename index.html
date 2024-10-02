@@ -41,7 +41,7 @@
     </footer>
     <div id="show_more" class="0" onclick="showMore()">+</div>
     <div onclick="closeOverlay(event)" id="card_overlay_ctn" class="card_overlay_ctn">
-        <div class="card_overlay">
+        <div id="card_overlay" class="card_overlay">
             <div class="card_overlay_header">
                 <span id="overlay_number_pokemon">#1</span>
                 <span id="overlay_name_pokemon">Bulbasaur</span>
@@ -54,82 +54,82 @@
                 <img class="icon_type_of_pokemon" src="./img/icons8-feuer-60.png" alt="Feuer">
             </div>
             <div class="overlay_card_menu">
-                <div class="overlay_menu_main overlay_menu_link">main</div>
-                <div class="overlay_menu_stats overlay_menu_link">stats</div>
-                <div class="overlay_menu_evochain overlay_menu_link">evo chain</div>
+                <div onclick="showOverlayInfoMain()" id="overlay_menu_main" class="overlay_menu_main overlay_menu_link">main</div>
+                <div onclick="showOverlayInfoStats()" id="overlay_menu_stats" class="overlay_menu_stats overlay_menu_link">stats</div>
+                <div onclick="showOverlayInfoEvo()" id="overlay_menu_evochain" class="overlay_menu_evochain overlay_menu_link">evo chain</div>
             </div>
             <div class="overlay_card_info">
-                <div class="overlay_info_main">
+                <div id="overlay_info_main" class="overlay_info_main">
                     <div class="height">
                         <span class="description">Height</span>
-                        <span class="value">0.6 m</span>
+                        <span id="height" class="value">0.6 m</span>
                     </div>
                     <div class="weight">
                         <span class="description">Weight</span>
-                        <span class="value">8.5 kg</span>
+                        <span id="weight" class="value">8.5 kg</span>
                     </div>
                     <div class="base_exp">
                         <span class="description">Base experience</span>
-                        <span class="value">62</span>
+                        <span id="base_exp" class="value">62</span>
                     </div>
                     <div class="abilities">
                         <span class="description">Abilities</span>
-                        <span class="value">blaze,solar-power</span>
+                        <span id="abilities" class="value">blaze,solar-power</span>
                     </div>
                 </div>
-                <div class="overlay_info_stats">
-                    <div class="hp">
-                        <span>hp</span>
+                <div id="overlay_info_stats" class="overlay_info_stats">
+                    <div id="stat1" class="hp">
+                        <span id="stat1name"></span>
                         <div class="process_line">
-                            <div class="line_to_fill"></div>                        
+                            <div id="stat1baseStat" class="line_to_fill"></div>                        
                         </div>
                     </div>
-                    <div class="attack">
-                        <span>attack</span>
+                    <div id="stat2" class="attack">
+                        <span id="stat2name"></span>
                         <div class="process_line">
-                            <div class="line_to_fill"></div>                        
+                            <div id="stat2baseStat" class="line_to_fill"></div>                        
                         </div>
                     </div>
-                    <div class="defense">
-                        <span>defense</span>
+                    <div id="stat3" class="attack">
+                        <span id="stat3name"></span>
                         <div class="process_line">
-                            <div class="line_to_fill"></div>                        
+                            <div id="stat3baseStat" class="line_to_fill"></div>                        
                         </div>
                     </div>
-                    <div class="special_attack">
-                        <span>special-attack</span>
+                    <div id="stat4" class="attack">
+                        <span id="stat4name"></span>
                         <div class="process_line">
-                            <div class="line_to_fill"></div>                        
+                            <div id="stat4baseStat" class="line_to_fill"></div>                        
                         </div>
                     </div>
-                    <div class="special_defense">
-                        <span>special-defense</span>
+                    <div id="stat5" class="attack">
+                        <span id="stat5name"></span>
                         <div class="process_line">
-                            <div class="line_to_fill"></div>                        
+                            <div id="stat5baseStat" class="line_to_fill"></div>                        
                         </div>
                     </div>
-                    <div class="speed">
-                        <span>speed</span>
+                    <div id="stat6" class="attack">
+                        <span id="stat6name"></span>
                         <div class="process_line">
-                            <div class="line_to_fill"></div>                        
+                            <div id="stat6baseStat" class="line_to_fill"></div>                        
                         </div>
                     </div>
                 </div>
-                <div class="evo_chain">
+                <div id="evo_chain" class="evo_chain">
                     <div class="evo_chain_ctn">
                         <div class="evo_pokemon pokemon_joung">
-                            <img src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
-                            <span>Charmander</span>
+                            <img id="thisPokemonImg" src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
+                            <span id="thisPokemonName">Charmander</span>
                         </div>
                         <span>>></span>
                         <div class="evo_pokemon pokemon_middle">
-                            <img src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
-                            <span>Charmeleon</span>
+                            <img id="nextPokemonImg" src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
+                            <span id="nextPokemonName">Charmeleon</span>
                         </div>
                         <span>>></span>
                         <div class="evo_pokemon pokemon_adult">
-                            <img src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
-                            <span>Charizard</span>
+                            <img id="afterNextPokemonImg" src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
+                            <span id="afterNextPokemonName">Charizard</span>
                         </div>
                     </div>
                 </div>

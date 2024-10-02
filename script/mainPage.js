@@ -1,6 +1,7 @@
 let allPokemonNameAndUrl = []; 
 let allPokemonDetails = [];
 let allPokemonMoreDetails = [];
+let allPokemonEvoChain = []
 let filteredPokemon = [];
 
 async function getData(filter) {
@@ -15,6 +16,9 @@ async function getData(filter) {
     let promisesallPokemonMoreDetails = allPokemonDetails.map(pokemon => fetch(pokemon.species.url).then(res => res.json()));
     allPokemonMoreDetails = await Promise.all(promisesallPokemonMoreDetails); 
     console.log(allPokemonMoreDetails)
+
+    checkEvoChain()
+    console.log(allPokemonEvoChain)
 
     filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails)
 }
@@ -51,7 +55,7 @@ async function filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails) {
                 "base_experience" : allPokemonDetails[i].base_experience,
                 "abilities" : checkPokemonAbilities(i),
                 "stats" : checkPokemonStats(i),
-                "evochain" : await checkEvoChain(i)
+                // "evochain" : await checkEvoChain(i)
             })
         }
     }
@@ -84,10 +88,13 @@ function checkPokemonStats(i) {
     return pokemonStatsArray
 }
 
-async function checkEvoChain(i) {
-    let responseEvoChain = await fetch(allPokemonMoreDetails[i].evolution_chain.url);
-    let evochain = await responseEvoChain.json();
-    return evochain
+async function checkEvoChain() {
+    for (let i = 0; i < allPokemonMoreDetails.length; i++) {
+        let responseEvoChain = await fetch(allPokemonMoreDetails[i].evolution_chain.url);
+        let evochain = await responseEvoChain.json();
+        allPokemonEvoChain.push(evochain)
+    }
+    allPokemonEvoChain = allPokemonEvoChain
 }
 
 async function renderFilteredPokemon(filteredPokemon) {
@@ -149,31 +156,100 @@ function showMore() {
 
 function disableButton(numberToShow) {
     if( numberToShow == filteredPokemon.length) {
-        document.getElementById("show_more").style.pointerEvents = "none";
-        document.getElementById("show_more").style.opacity = "0.25";
+        document.getElementById("show_more").style.display = "none";
     } else {
-        document.getElementById("show_more").style.pointerEvents = "auto";
-        document.getElementById("show_more").style.opacity = "1";
+        document.getElementById("show_more").style.display = "flex";
     }
 }
 
 function openOverlay(e) {
     let thisPokemon = checkPokemonId(e) 
+    console.log(thisPokemon)
     document.getElementById("card_overlay_ctn").style.display = "flex"
     let indexOfFilteredPokemon = checkIndexOfFilteredPokemon(thisPokemon, filteredPokemon)
     console.log(indexOfFilteredPokemon)
-
     fillOverlay(indexOfFilteredPokemon) 
-
+    document.getElementById("card_overlay").addEventListener("click", function(e) {
+        e.stopPropagation()
+    })
 }
 
 function fillOverlay(indexOfFilteredPokemon) {
+    let thisName = filteredPokemon[indexOfFilteredPokemon].name;
     document.getElementById("overlay_number_pokemon").innerText = `#${filteredPokemon[indexOfFilteredPokemon].number}`
-    document.getElementById("overlay_name_pokemon").innerText = `${filteredPokemon[indexOfFilteredPokemon].name}`
+    document.getElementById("overlay_name_pokemon").innerText = `${thisName}`
     document.getElementById("imgOverlay").src = `${filteredPokemon[indexOfFilteredPokemon].img}`
-    document.getElementById("overlay_card_img_pokemon_ctn").classList.add = `${filteredPokemon[indexOfFilteredPokemon].types[0]}`;    
+    document.getElementById("overlay_card_img_pokemon_ctn").classList.add(`${filteredPokemon[indexOfFilteredPokemon].types[0]}`);    
+    let pokemonTypes = setTypesToPokemon(filteredPokemon, indexOfFilteredPokemon)
+    document.getElementById("overlay_card_type_of_pokemon_ctn").innerHTML = pokemonTypes;
+    setInfoMain(filteredPokemon, indexOfFilteredPokemon)
+    setInfoStats(filteredPokemon, indexOfFilteredPokemon)
+    setEvochainThisPokemon(thisName)
+    showOverlayInfoMain()
 }
 
+function setEvochainThisPokemon(thisName) {
+    let indexUnfilteredArray = checkUnfilteredArray(thisName)
+    console.log(`UnfilteredIndex: ${indexUnfilteredArray}`)
+    let indexEvochainArray = checkEvoChainArray(thisName)
+    console.log(`Evochain: ${indexEvochainArray}`);
+
+    evochainThisPokemon(allPokemonDetails, allPokemonEvoChain, indexUnfilteredArray, indexEvochainArray)
+    
+}
+
+function evochainThisPokemon(allPokemonDetails, allPokemonEvoChain, indexUnfilteredArray, indexEvochainArray) {
+
+    document.getElementById("thisPokemonImg").src = allPokemonDetails[indexUnfilteredArray].sprites.front_default;
+    document.getElementById("thisPokemonName").innerText = `${allPokemonDetails[indexUnfilteredArray].name}`;
+
+    let nextPokemon = allPokemonEvoChain[indexEvochainArray].chain.evolves_to[0].species.name
+    console.log(nextPokemon)
+}
+
+function checkUnfilteredArray(thisName) {
+    let index;
+    for (let i = 0; i < allPokemonDetails.length; i++) {
+        if (allPokemonDetails[i].name == thisName) {
+            index = i;
+            return index
+        }
+    }
+    return index
+}
+
+function checkEvoChainArray(thisName) {
+    let index;
+    for (let i = 0; i < allPokemonEvoChain.length; i++) {
+        if (allPokemonEvoChain[i].chain.species.name == thisName) {
+            index = i;
+            return index
+        }
+    }
+    return index
+}
+
+function setInfoMain(filteredPokemon, indexOfFilteredPokemon) {
+    document.getElementById("height").innerText = `${filteredPokemon[indexOfFilteredPokemon].height} m`
+    document.getElementById("weight").innerText = `${filteredPokemon[indexOfFilteredPokemon].weight} kg`
+    document.getElementById("base_exp").innerText = `${filteredPokemon[indexOfFilteredPokemon].base_experience}`
+    document.getElementById("abilities").innerText = `${filteredPokemon[indexOfFilteredPokemon].abilities.join(', ')}`
+}
+
+function setInfoStats(filteredPokemon, indexOfFilteredPokemon) {
+    document.getElementById("stat1name").innerText = `${filteredPokemon[indexOfFilteredPokemon].stats[0].name}`
+    document.getElementById("stat1baseStat").style.width = `${filteredPokemon[indexOfFilteredPokemon].stats[0].base_stat}%`
+    document.getElementById("stat2name").innerText = `${filteredPokemon[indexOfFilteredPokemon].stats[1].name}`
+    document.getElementById("stat2baseStat").style.width = `${filteredPokemon[indexOfFilteredPokemon].stats[1].base_stat}%`
+    document.getElementById("stat3name").innerText = `${filteredPokemon[indexOfFilteredPokemon].stats[2].name}`
+    document.getElementById("stat3baseStat").style.width = `${filteredPokemon[indexOfFilteredPokemon].stats[2].base_stat}%`
+    document.getElementById("stat4name").innerText = `${filteredPokemon[indexOfFilteredPokemon].stats[3].name}`
+    document.getElementById("stat4baseStat").style.width = `${filteredPokemon[indexOfFilteredPokemon].stats[3].base_stat}%`
+    document.getElementById("stat5name").innerText = `${filteredPokemon[indexOfFilteredPokemon].stats[4].name}`
+    document.getElementById("stat5baseStat").style.width = `${filteredPokemon[indexOfFilteredPokemon].stats[4].base_stat}%`
+    document.getElementById("stat6name").innerText = `${filteredPokemon[indexOfFilteredPokemon].stats[5].name}`
+    document.getElementById("stat6baseStat").style.width = `${filteredPokemon[indexOfFilteredPokemon].stats[5].base_stat}%`
+} 
 
 function checkIndexOfFilteredPokemon(thisPokemon, filteredPokemon) {
     for (let i = 0; i < filteredPokemon.length; i++) {
