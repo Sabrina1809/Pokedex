@@ -195,15 +195,22 @@ footer {
             align-items: end;
             height: 140px;
             background-image: radial-gradient(circle, rgba(255,255,255,1) 0%, transparent 100%);
-            & img {
+            overflow: hidden;
+            position: relative;
+     
+            & #imgOverlay {
+                animation: showPokemon 1s ease-in-out;
                 height: 140px;
                 filter: drop-shadow(0px 5px 8px rgba(0, 0, 0, 1));
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%);
             }
-
+           
             & .buttonLeftRight {
                 width: 30px;
                 height: 30px;
-                align-self: flex-start;
+                align-self: flex-end;
                 border-radius: 50%;
                 margin: 5px;
                 transition: all 0.2s ease-in-out;
@@ -211,7 +218,6 @@ footer {
                 &:hover {
                     cursor: pointer;
                     background-color:  rgba(255, 255, 255, 0.25);
-                   
                 }
             }
         }
@@ -248,7 +254,6 @@ footer {
                     background-color: rgba(37, 61, 65, 0.75);
                 }
             }
-
         }
         & .overlay_card_info {
             background-color: rgb(29, 36, 58);
@@ -300,7 +305,6 @@ footer {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-
                     & .evo_pokemon {
                         display: flex;
                         flex-direction: column;
@@ -319,13 +323,28 @@ footer {
     }
 }
 
+@keyframes showPokemon {
+    0% {
+        height: 0px;
+        opacity: 0;
+    }
+    80% {
+        height: 150px;
+    }
+    100% {
+        height: 140px;
+        opacity: 1;
+    }
+}
+
 @keyframes showRedLine {
     0% {
         transform: translate(-100%);
+        background-color: black;
     }
-
     100% {
         transform: translate(0%);
+        background-color: rgb(199, 32, 32);
     }
 }
 

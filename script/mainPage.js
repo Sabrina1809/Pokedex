@@ -90,7 +90,7 @@ async function filterPokemon(allPokemon, filter) {
                 "name" : allPokemon[i].name, 
                 "img" : allPokemon[i].sprites.other.home.front_default,
                 "types" : checkPokemonType(i), 
-                // "color" : allPokemon[i].color.name,
+                "color" : allPokemon[i].types[0].type.name,
                 "base_experience" : allPokemon[i].base_experience,
                 "abilities" : checkPokemonAbilities(i),
                 "stats" : checkPokemonStats(i),
@@ -220,7 +220,43 @@ function openOverlay(e) {
     document.getElementById("card_overlay_ctn").style.display = "flex"
     let indexOfFilteredPokemon = checkIndexOfFilteredPokemon(thisPokemon, filteredPokemon)
     console.log(indexOfFilteredPokemon)
+    let indexOfAllPokemon = checkIndexOfAllPokemon(indexOfFilteredPokemon)
+    console.log(indexOfAllPokemon);
+    document.getElementById("toLeft").className = "buttonLeftRight"
+    document.getElementById("toRight").className = "buttonLeftRight"
+    document.getElementById("toLeft").classList.add(`${indexOfFilteredPokemon}`)
+    document.getElementById("toRight").classList.add(`${indexOfFilteredPokemon}`)
+    
     fillOverlay(indexOfFilteredPokemon) 
+    document.getElementById("card_overlay").addEventListener("click", function(e) {
+        e.stopPropagation()
+    })
+}
+
+function oneLeftOrRight(e, oneUpOrDown, filteredPokemon) {
+    e.stopPropagation()
+    document.getElementById("card_overlay_ctn").style.display = "flex"
+    document.getElementById("toLeft").classList.remove("buttonLeftRight")
+    document.getElementById("toRight").classList.remove("buttonLeftRight")
+    let currentIndex = document.getElementById("toLeft").className;
+    currentIndex = Number(currentIndex)
+    console.log(currentIndex);
+    let nextIndex = currentIndex + oneUpOrDown
+   
+    if (nextIndex == -1) {
+        nextIndex = filteredPokemon.length - 1
+    }
+    if (nextIndex == filteredPokemon.length) {
+        nextIndex = 0
+    }
+    console.log(nextIndex);
+
+    document.getElementById("toLeft").className = "buttonLeftRight"
+    document.getElementById("toRight").className = "buttonLeftRight"
+    document.getElementById("toLeft").classList.add(`${nextIndex}`)
+    document.getElementById("toRight").classList.add(`${nextIndex}`)
+    
+    fillOverlay(nextIndex) 
     document.getElementById("card_overlay").addEventListener("click", function(e) {
         e.stopPropagation()
     })
@@ -231,6 +267,8 @@ function fillOverlay(indexOfFilteredPokemon) {
     document.getElementById("overlay_number_pokemon").innerText = `#${filteredPokemon[indexOfFilteredPokemon].number}`
     document.getElementById("overlay_name_pokemon").innerText = `${thisName}`
     document.getElementById("imgOverlay").src = `${filteredPokemon[indexOfFilteredPokemon].img}`
+    document.getElementById("overlay_card_img_pokemon_ctn").className = "";    
+    document.getElementById("overlay_card_img_pokemon_ctn").classList.add("overlay_card_img_pokemon_ctn");    
     document.getElementById("overlay_card_img_pokemon_ctn").classList.add(`${filteredPokemon[indexOfFilteredPokemon].types[0]}`);    
     let pokemonTypes = setTypesToPokemon(filteredPokemon, indexOfFilteredPokemon)
     document.getElementById("overlay_card_type_of_pokemon_ctn").innerHTML = pokemonTypes;
@@ -266,28 +304,6 @@ function addEventListeners(e) {
     })
 }
 
-function checkUnfilteredArray(thisName) {
-    let index;
-    for (let i = 0; i < allPokemonDetails.length; i++) {
-        if (allPokemonDetails[i].name == thisName) {
-            index = i;
-            return index
-        }
-    }
-    return index
-}
-
-function checkEvoChainArray(thisName) {
-    let index;
-    for (let i = 0; i < allPokemon.length; i++) {
-        if (allPokemon[i].chain.species.name == thisName) {
-            index = i;
-            return index
-        }
-    }
-    return index
-}
-
 function setInfoMain(filteredPokemon, indexOfFilteredPokemon) {
     document.getElementById("height").innerText = `${filteredPokemon[indexOfFilteredPokemon].height} m`
     document.getElementById("weight").innerText = `${filteredPokemon[indexOfFilteredPokemon].weight} kg`
@@ -313,6 +329,14 @@ function setInfoStats(filteredPokemon, indexOfFilteredPokemon) {
 function checkIndexOfFilteredPokemon(thisPokemon, filteredPokemon) {
     for (let i = 0; i < filteredPokemon.length; i++) {
         if (filteredPokemon[i].id == thisPokemon) {
+            return i
+        }
+    }
+}
+
+function checkIndexOfAllPokemon(indexOfFilteredPokemon) {
+    for (let i = 0; i < allPokemon.length; i++) {
+        if (filteredPokemon[indexOfFilteredPokemon].name == allPokemon[i].name) {
             return i
         }
     }

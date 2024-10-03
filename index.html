@@ -47,13 +47,13 @@
                 <span id="overlay_name_pokemon">Bulbasaur</span>
             </div>
             <div id="overlay_card_img_pokemon_ctn" class="overlay_card_img_pokemon_ctn">
-                <img class="buttonLeftRight" id="toLeft" src="./img/arrow3left.png" alt="arrow to left">  
-                <img id="imgOverlay" src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
-                <img class="buttonLeftRight" id="ToRight" src="./img/arrow3right.png" alt="arrow to right">
+                <img class="buttonLeftRight" onclick="oneLeftOrRight(event, -1, filteredPokemon)" id="toLeft" src="./img/arrow3left.png" alt="arrow to left">  
+                <img class="imgOverlay" id="imgOverlay" src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
+                <img class="buttonLeftRight" onclick="oneLeftOrRight(event, 1, filteredPokemon)" id="toRight" src="./img/arrow3right.png" alt="arrow to right">
             </div>
             <div id="overlay_card_type_of_pokemon_ctn" class="overlay_card_type_of_pokemon_ctn">
-                <img class="icon_type_of_pokemon" src="./img/icons8-blatt-100.png" alt="Blatt">
-                <img class="icon_type_of_pokemon" src="./img/icons8-feuer-60.png" alt="Feuer">
+                <img class="icon_type_of_pokemon" src="" alt="">
+                <img class="icon_type_of_pokemon" src="" alt="">
             </div>
             <div class="overlay_card_menu">
                 <div onclick="showOverlayInfoMain()" id="overlay_menu_main" class="overlay_menu_main overlay_menu_link">main</div>
