@@ -22,14 +22,13 @@ async function getData(filter) {
     console.log(allPokemon[0])  
     console.log(allPokemon);
 
-    stopLoadingSpinner()
+    stopLoadingSpinner()   // Funktion streichen und gleich Befehl ausführen
     
     filterPokemon(allPokemon, filter)
 }
 
 function startLoadingSpinner() {
     document.getElementById("loadingspinner_ctn").style.display = "flex";
-    
     let loadingText = [".", ".", ".", " ", "l", "o", "a", "d", "i", "n", "g", " ", ".", ".", "."]
 
     for (let i = 0; i < loadingText.length; i++) {
@@ -42,8 +41,6 @@ function startLoadingSpinner() {
             setTimeout(() => showText(loadingText, i), i * 200)
         }
     }, 3500)
-
-   
 }
 
 function showText(loadingText, i) {
@@ -52,7 +49,6 @@ function showText(loadingText, i) {
 
 function stopLoadingSpinner() {
     document.getElementById("loadingspinner_ctn").style.display = "none";
-
 }
 
 async function connectArrays(allPokemonDetails, allPokemonMoreDetails) {
@@ -238,10 +234,36 @@ function fillOverlay(indexOfFilteredPokemon) {
     document.getElementById("overlay_card_img_pokemon_ctn").classList.add(`${filteredPokemon[indexOfFilteredPokemon].types[0]}`);    
     let pokemonTypes = setTypesToPokemon(filteredPokemon, indexOfFilteredPokemon)
     document.getElementById("overlay_card_type_of_pokemon_ctn").innerHTML = pokemonTypes;
+    addEventListeners(event)
     setInfoMain(filteredPokemon, indexOfFilteredPokemon)
     setInfoStats(filteredPokemon, indexOfFilteredPokemon)
+    
     setEvochainThisPokemon(thisName)
     showOverlayInfoMain()
+}
+
+function addEventListeners(e) {
+    document.getElementById("overlay_menu_main").addEventListener("click", function(e) {
+        e.stopPropagation(e)
+    })
+    document.getElementById("overlay_menu_stats").addEventListener("click", function(e) {
+        e.stopPropagation(e)
+    })
+    document.getElementById("overlay_menu_evochain").addEventListener("click", function(e) {
+        e.stopPropagation(e)
+    })
+    document.getElementById("overlay_card_type_of_pokemon_ctn").addEventListener("click", function(e) {
+        e.stopPropagation(e)
+    })
+    document.getElementById("overlay_card_img_pokemon_ctn").addEventListener("click", function(e) {
+        e.stopPropagation(e)
+    })
+    document.getElementById("card_overlay_header").addEventListener("click", function(e) {
+        e.stopPropagation(e)
+    })
+    document.getElementById("overlay_card_info").addEventListener("click", function(e) {
+        e.stopPropagation(e)
+    })
 }
 
 function checkUnfilteredArray(thisName) {

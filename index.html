@@ -42,12 +42,14 @@
     <div id="show_more" class="0" onclick="showMore()">+</div>
     <div onclick="closeOverlay(event)" id="card_overlay_ctn" class="card_overlay_ctn">
         <div id="card_overlay" class="card_overlay">
-            <div class="card_overlay_header">
+            <div id="card_overlay_header" class="card_overlay_header">
                 <span id="overlay_number_pokemon">#1</span>
                 <span id="overlay_name_pokemon">Bulbasaur</span>
             </div>
             <div id="overlay_card_img_pokemon_ctn" class="overlay_card_img_pokemon_ctn">
+                <img class="buttonLeftRight" id="toLeft" src="./img/arrow3left.png" alt="arrow to left">  
                 <img id="imgOverlay" src="./img/icons8-pikachu-pokemon-100.png" alt="Pokemon">
+                <img class="buttonLeftRight" id="ToRight" src="./img/arrow3right.png" alt="arrow to right">
             </div>
             <div id="overlay_card_type_of_pokemon_ctn" class="overlay_card_type_of_pokemon_ctn">
                 <img class="icon_type_of_pokemon" src="./img/icons8-blatt-100.png" alt="Blatt">
@@ -58,7 +60,7 @@
                 <div onclick="showOverlayInfoStats()" id="overlay_menu_stats" class="overlay_menu_stats overlay_menu_link">stats</div>
                 <div onclick="showOverlayInfoEvo()" id="overlay_menu_evochain" class="overlay_menu_evochain overlay_menu_link">evo chain</div>
             </div>
-            <div class="overlay_card_info">
+            <div id="overlay_card_info" class="overlay_card_info">
                 <div id="overlay_info_main" class="overlay_info_main">
                     <div class="height">
                         <span class="description">Height</span>
