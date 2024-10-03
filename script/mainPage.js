@@ -9,21 +9,14 @@ async function getData(filter) {
     let responseAllPokemon = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
     let dataAllPokemon = await responseAllPokemon.json();
     allPokemonNameAndUrl = dataAllPokemon.results;
-
     let promisesSinglePokemon = allPokemonNameAndUrl.map(pokemon => fetch(pokemon.url).then(res => res.json()));
     allPokemonDetails = await Promise.all(promisesSinglePokemon); 
-    // console.log(allPokemonDetails)
-
     let promisesallPokemonMoreDetails = allPokemonDetails.map(pokemon => fetch(pokemon.species.url).then(res => res.json()));
     allPokemonMoreDetails = await Promise.all(promisesallPokemonMoreDetails); 
-    // console.log(allPokemonMoreDetails)
-
     allPokemon = await connectArrays(allPokemonDetails, allPokemonMoreDetails)
     console.log(allPokemon[0])  
     console.log(allPokemon);
-
-    stopLoadingSpinner()   // Funktion streichen und gleich Befehl ausführen
-    
+    document.getElementById("loadingspinner_ctn").style.display = "none";
     filterPokemon(allPokemon, filter)
 }
 
@@ -45,10 +38,6 @@ function startLoadingSpinner() {
 
 function showText(loadingText, i) {
     document.getElementById("loading_text").innerHTML += loadingText[i]
-}
-
-function stopLoadingSpinner() {
-    document.getElementById("loadingspinner_ctn").style.display = "none";
 }
 
 async function connectArrays(allPokemonDetails, allPokemonMoreDetails) {
