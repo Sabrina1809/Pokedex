@@ -216,12 +216,9 @@ function disableButton(numberToShow) {
 
 function openOverlay(e) {
     let thisPokemon = checkPokemonId(e) 
-    console.log(thisPokemon)
     document.getElementById("card_overlay_ctn").style.display = "flex"
     let indexOfFilteredPokemon = checkIndexOfFilteredPokemon(thisPokemon, filteredPokemon)
-    console.log(indexOfFilteredPokemon)
     let indexOfAllPokemon = checkIndexOfAllPokemon(indexOfFilteredPokemon)
-    console.log(indexOfAllPokemon);
     document.getElementById("toLeft").className = "buttonLeftRight"
     document.getElementById("toRight").className = "buttonLeftRight"
     document.getElementById("toLeft").classList.add(`${indexOfFilteredPokemon}`)
@@ -238,28 +235,31 @@ function oneLeftOrRight(e, oneUpOrDown, filteredPokemon) {
     document.getElementById("card_overlay_ctn").style.display = "flex"
     document.getElementById("toLeft").classList.remove("buttonLeftRight")
     document.getElementById("toRight").classList.remove("buttonLeftRight")
-    let currentIndex = document.getElementById("toLeft").className;
-    currentIndex = Number(currentIndex)
-    console.log(currentIndex);
-    let nextIndex = currentIndex + oneUpOrDown
-   
+    let currentIndex = Number(document.getElementById("toLeft").className);
+    let nextIndex = checkNextIndex(currentIndex, oneUpOrDown, filteredPokemon)
+    addClassNamesButtons(nextIndex)
+    fillOverlay(nextIndex) 
+    document.getElementById("card_overlay").addEventListener("click", function(e) {
+        e.stopPropagation()
+    })
+}
+
+function checkNextIndex(currentIndex, oneUpOrDown, filteredPokemon) {
+    nextIndex = currentIndex + oneUpOrDown
     if (nextIndex == -1) {
         nextIndex = filteredPokemon.length - 1
     }
     if (nextIndex == filteredPokemon.length) {
         nextIndex = 0
     }
-    console.log(nextIndex);
+    return nextIndex
+}
 
+function addClassNamesButtons(nextIndex) {
     document.getElementById("toLeft").className = "buttonLeftRight"
     document.getElementById("toRight").className = "buttonLeftRight"
     document.getElementById("toLeft").classList.add(`${nextIndex}`)
     document.getElementById("toRight").classList.add(`${nextIndex}`)
-    
-    fillOverlay(nextIndex) 
-    document.getElementById("card_overlay").addEventListener("click", function(e) {
-        e.stopPropagation()
-    })
 }
 
 function fillOverlay(indexOfFilteredPokemon) {
@@ -267,19 +267,22 @@ function fillOverlay(indexOfFilteredPokemon) {
     document.getElementById("overlay_number_pokemon").innerText = `#${filteredPokemon[indexOfFilteredPokemon].number}`
     document.getElementById("overlay_name_pokemon").innerText = `${thisName}`
     document.getElementById("imgOverlay").src = `${filteredPokemon[indexOfFilteredPokemon].img}`
-    document.getElementById("overlay_card_img_pokemon_ctn").className = "";    
-    document.getElementById("overlay_card_img_pokemon_ctn").classList.add("overlay_card_img_pokemon_ctn");    
-    document.getElementById("overlay_card_img_pokemon_ctn").classList.add(`${filteredPokemon[indexOfFilteredPokemon].types[0]}`);    
+    addClassNamesOverlay(filteredPokemon, indexOfFilteredPokemon)
     let pokemonTypes = setTypesToPokemon(filteredPokemon, indexOfFilteredPokemon)
     document.getElementById("overlay_card_type_of_pokemon_ctn").innerHTML = pokemonTypes;
     addEventListeners(event)
     setInfoMain(filteredPokemon, indexOfFilteredPokemon)
     setInfoStats(filteredPokemon, indexOfFilteredPokemon)
-    
     setEvochainThisPokemon(thisName)
     showOverlayInfoMain()
 }
 
+function addClassNamesOverlay(filteredPokemon, indexOfFilteredPokemon) {
+    document.getElementById("overlay_card_img_pokemon_ctn").className = "";    
+    document.getElementById("overlay_card_img_pokemon_ctn").classList.add("overlay_card_img_pokemon_ctn");    
+    document.getElementById("overlay_card_img_pokemon_ctn").classList.add(`${filteredPokemon[indexOfFilteredPokemon].types[0]}`);    
+}
+ 
 function addEventListeners(e) {
     document.getElementById("overlay_menu_main").addEventListener("click", function(e) {
         e.stopPropagation(e)
