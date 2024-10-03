@@ -40,6 +40,11 @@ header {
             display: flex;
             flex-direction: row;
             align-items: center;
+
+            & img {
+                width: 40px;
+                height: 40px;
+            }
         }
         & #search {
             width: 200px;
@@ -109,7 +114,6 @@ main {
                     height: 40px;
                 }
             }
-
             &:hover .card_img_pokemon_ctn {
                 background-image: radial-gradient(circle, rgba(255,255,255,1) 0%, transparent 100%);
             }
@@ -320,6 +324,55 @@ footer {
 
     &:active {
         scale: 0.95;
+    }
+}
+
+.loadingspinner_ctn {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 50;
+    position: fixed;
+    background-color: rgba(61, 61, 61, 0.9);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    & #loading_img {
+        animation: pokeball 8s;
+    }
+
+    & #loading_text {
+        text-align: center;
+        font-size: 20px;
+        height: 50px;
+        width: 150px;
+    }
+}
+
+@keyframes pokeball {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.5;
+    }
+    30% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    40% {
+        transform: scale(0.95);
+        opacity: 0.5;
+    }
+    70% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0.5;
     }
 }
 

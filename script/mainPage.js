@@ -2,13 +2,14 @@ let allPokemonNameAndUrl = [];
 let allPokemonDetails = [];
 let allPokemonMoreDetails = [];
 let allPokemon = [];
-// let allPokemonComplete = []
 let filteredPokemon = [];
 
 async function getData(filter) {
+    startLoadingSpinner()
     let responseAllPokemon = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
     let dataAllPokemon = await responseAllPokemon.json();
     allPokemonNameAndUrl = dataAllPokemon.results;
+
     let promisesSinglePokemon = allPokemonNameAndUrl.map(pokemon => fetch(pokemon.url).then(res => res.json()));
     allPokemonDetails = await Promise.all(promisesSinglePokemon); 
     // console.log(allPokemonDetails)
@@ -17,13 +18,41 @@ async function getData(filter) {
     allPokemonMoreDetails = await Promise.all(promisesallPokemonMoreDetails); 
     // console.log(allPokemonMoreDetails)
 
-    // let allPokemonEvoChain = await checkEvoChain()
-    // console.log(allPokemonEvoChain)
     allPokemon = await connectArrays(allPokemonDetails, allPokemonMoreDetails)
     console.log(allPokemon[0])  
     console.log(allPokemon);
+
+    stopLoadingSpinner()
     
     filterPokemon(allPokemon, filter)
+}
+
+function startLoadingSpinner() {
+    document.getElementById("loadingspinner_ctn").style.display = "flex";
+    
+    let loadingText = [".", ".", ".", " ", "l", "o", "a", "d", "i", "n", "g", " ", ".", ".", "."]
+
+    for (let i = 0; i < loadingText.length; i++) {
+        setTimeout(() => showText(loadingText, i), i * 200)
+    }
+
+    setTimeout(() => { 
+        document.getElementById("loading_text").innerHTML = ""
+        for (let i = 0; i < loadingText.length; i++) {
+            setTimeout(() => showText(loadingText, i), i * 200)
+        }
+    }, 3500)
+
+   
+}
+
+function showText(loadingText, i) {
+    document.getElementById("loading_text").innerHTML += loadingText[i]
+}
+
+function stopLoadingSpinner() {
+    document.getElementById("loadingspinner_ctn").style.display = "none";
+
 }
 
 async function connectArrays(allPokemonDetails, allPokemonMoreDetails) {
@@ -57,18 +86,21 @@ async function filterPokemon(allPokemon, filter) {
     for (let i = 0; i < allPokemon.length; i++) {
         if (allPokemon[i].name.includes(filter) && allPokemon[i].is_default == true) {
             filteredPokemon.push({
-                "id" : allPokemon[i].id + allPokemon[i].name,
+                "id" : allPokemon[i].order + allPokemon[i].name,
                 "url" : allPokemon[i].species.url,
                 "weight" : allPokemon[i].weight,
                 "height" : allPokemon[i].height,
-                "number" : allPokemon[i].id, 
+                "number" : allPokemon[i].order, 
                 "name" : allPokemon[i].name, 
                 "img" : allPokemon[i].sprites.other.home.front_default,
                 "types" : checkPokemonType(i), 
-                "color" : allPokemon[i].color.name,
+                // "color" : allPokemon[i].color.name,
                 "base_experience" : allPokemon[i].base_experience,
                 "abilities" : checkPokemonAbilities(i),
                 "stats" : checkPokemonStats(i),
+                "evo_this_pokemon" : {"name" : allPokemon[i].name, "number" : allPokemon[i].order, "img" : allPokemon[i].sprites.other.home.front_default},
+                // "evo_next_pokemon" : {"name" : allPokemon[i].chain.evolves_to[0].species.name, "indexAllPokemon" : checkPokemonIndex(allPokemon, i),"number" : allPokemon[i].id, "img" : allPokemon[i].sprites.other.home.front_default},
+                // "evo_after_next_pokemon" : {"name" : allPokemon[i].chain.evolves_to[0].evolves_to[0].species.name, "number" : allPokemon[i].id, "img" : allPokemon[i].sprites.other.home.front_default}
                 // "evochain_step1" : 
             })
         }
@@ -78,26 +110,35 @@ async function filterPokemon(allPokemon, filter) {
     console.log(filteredPokemon)
 }
 
+function checkPokemonIndex(allPokemon, i) {
+    let index
+    for (let j = 0; j < allPokemon.length; j++)
+    if (allPokemon[i].chain.evolves_to[0].species.name == allPokemon[j].name) {
+        index = j
+    }
+    return index
+}
+
 function checkPokemonType(i) {
     let pokemonTypeArray = [];
-    for (let j = 0; j < allPokemonComplete[i].types.length; j++) {
-        pokemonTypeArray.push(allPokemonComplete[i].types[j].type.name)
+    for (let j = 0; j < allPokemon[i].types.length; j++) {
+        pokemonTypeArray.push(allPokemon[i].types[j].type.name)
     }
     return pokemonTypeArray
 }
 
 function checkPokemonAbilities(i) {
     let pokemonAbilitiesArray = [];
-    for (let j = 0; j < allPokemonComplete[i].abilities.length; j++) {
-        pokemonAbilitiesArray.push(allPokemonComplete[i].abilities[j].ability.name)
+    for (let j = 0; j < allPokemon[i].abilities.length; j++) {
+        pokemonAbilitiesArray.push(allPokemon[i].abilities[j].ability.name)
     }
     return pokemonAbilitiesArray
 }
 
 function checkPokemonStats(i) {
     let pokemonStatsArray = [];
-    for (let j = 0; j < allPokemonComplete[i].stats.length; j++) {
-        pokemonStatsArray.push({"name" : allPokemonComplete[i].stats[j].stat.name, "base_stat" : allPokemonComplete[i].stats[j].base_stat})
+    for (let j = 0; j < allPokemon[i].stats.length; j++) {
+        pokemonStatsArray.push({"name" : allPokemon[i].stats[j].stat.name, "base_stat" : allPokemon[i].stats[j].base_stat})
     }
     return pokemonStatsArray
 }
@@ -203,25 +244,6 @@ function fillOverlay(indexOfFilteredPokemon) {
     showOverlayInfoMain()
 }
 
-function setEvochainThisPokemon(thisName) {
-    let indexUnfilteredArray = checkUnfilteredArray(thisName)
-    console.log(`UnfilteredIndex: ${indexUnfilteredArray}`)
-    let indexEvochainArray = checkEvoChainArray(thisName)
-    console.log(`Evochain: ${indexEvochainArray}`);
-
-    evochainThisPokemon(allPokemonDetails, allPokemonEvoChain, indexUnfilteredArray, indexEvochainArray)
-    
-}
-
-function evochainThisPokemon(allPokemonDetails, allPokemonEvoChain, indexUnfilteredArray, indexEvochainArray) {
-
-    document.getElementById("thisPokemonImg").src = allPokemonDetails[indexUnfilteredArray].sprites.front_default;
-    document.getElementById("thisPokemonName").innerText = `${allPokemonDetails[indexUnfilteredArray].name}`;
-
-    let nextPokemon = allPokemonEvoChain[indexEvochainArray].chain.evolves_to[0].species.name
-    console.log(nextPokemon)
-}
-
 function checkUnfilteredArray(thisName) {
     let index;
     for (let i = 0; i < allPokemonDetails.length; i++) {
@@ -235,8 +257,8 @@ function checkUnfilteredArray(thisName) {
 
 function checkEvoChainArray(thisName) {
     let index;
-    for (let i = 0; i < allPokemonEvoChain.length; i++) {
-        if (allPokemonEvoChain[i].chain.species.name == thisName) {
+    for (let i = 0; i < allPokemon.length; i++) {
+        if (allPokemon[i].chain.species.name == thisName) {
             index = i;
             return index
         }
