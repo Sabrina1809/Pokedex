@@ -11,8 +11,6 @@
     font-family: sans-serif;
 }
 
-
-
 body {
     width: 100%;
     min-width: 320px;
@@ -66,11 +64,8 @@ header {
                 outline: none;
 
                 &:focus {
-              
                     box-shadow: 0 0 5px rgb(29, 36, 58) inset;
                 }
-              
-          
             }
             & img {
                 position: absolute;
@@ -80,7 +75,6 @@ header {
                 right: 10px;
             }
         }
-       
     }
 }
 
@@ -418,7 +412,7 @@ footer {
 }
 
 .loadingspinner_ctn {
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -432,7 +426,7 @@ footer {
     bottom: 0;
 
     & #loading_img {
-        animation: pokeball 10s infinite;
+        animation: pokeball 2s infinite;
     }
 
     & #loading_text {
@@ -448,57 +442,13 @@ footer {
         transform: scale(0.95);
         filter: grayscale(0.5);
     }
-    10% {
+    80% {
         transform: scale(1);
         filter: grayscale(0);
-    }
-    15% {
-        transform: scale(0.95);
-        filter: grayscale(0.5);
-    }
-    25% {
-        transform: scale(1);
-        filter: grayscale(0);
-    }
-    30% {
-        transform: scale(0.95);
-        filter: grayscale(0.5);
-    }
-    40% {
-        transform: scale(1);
-        filter: grayscale(0);
-    }
-    45% {
-        transform: scale(0.95);
-        filter: grayscale(0.5);
-    }
-    55% {
-        transform: scale(1);
-        filter: grayscale(0);
-    }
-    60% {
-        transform: scale(0.95);
-        filter: grayscale(0.5);
-    }
-    70% {
-        transform: scale(1);
-        filter: grayscale(0);
-    }
-    75% {
-        transform: scale(0.95);
-        filter: grayscale(0.5);
-    }
-    85% {
-        transform: scale(1);
-        filter: grayscale(0);
-    }
-    90% {
-        transform: scale(0.95);
-        filter: grayscale(0.5);
     }
     100% {
-        transform: scale(1);
-        filter: grayscale(0);
+        transform: scale(0.95);
+        filter: grayscale(0.5);
     }
 }
 

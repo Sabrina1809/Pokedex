@@ -3,6 +3,13 @@ let allPokemonDetails = [];
 let allPokemonMoreDetails = [];
 let allPokemon = [];
 let filteredPokemon = [];
+let loadingText = [".", ".", ".", " ", "l", "o", "a", "d", "i", "n", "g", " ", ".", ".", "."]
+let loadingTextInterval = setInterval(() => { 
+    document.getElementById("loading_text").innerHTML = ""
+    for (let i = 0; i < loadingText.length; i++) {
+        setTimeout(() => showText(loadingText, i), i * 200)
+    }
+}, 3500)
 
 async function getData(filter) {
     startLoadingSpinner()
@@ -22,19 +29,9 @@ async function getData(filter) {
 
 function startLoadingSpinner() {
     document.getElementById("loadingspinner_ctn").style.display = "flex";
-    let loadingText = [".", ".", ".", " ", "l", "o", "a", "d", "i", "n", "g", " ", ".", ".", "."]
     for (let i = 0; i < loadingText.length; i++) {
         setTimeout(() => showText(loadingText, i), i * 200)
     }
-    let loadingTextInterval = setInterval(() => { 
-        document.getElementById("loading_text").innerHTML = ""
-        for (let i = 0; i < loadingText.length; i++) {
-            setTimeout(() => showText(loadingText, i), i * 200)
-        }
-    }, 3200)
-    setTimeout(function() {
-        clearInterval(loadingTextInterval);
-    }, 10000);
 }
 
 function showText(loadingText, i) {
@@ -93,6 +90,7 @@ async function filterPokemon(allPokemon, filter) {
     }
     filteredPokemon = filteredPokemon
     renderFilteredPokemon(filteredPokemon)
+    clearInterval(loadingTextInterval);
     console.log(filteredPokemon)
 }
 
