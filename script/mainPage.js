@@ -61,7 +61,7 @@ function getFilter() {
         filter = ""
     } else {
         console.log(input)
-        filter = input;
+        filter = input.toLowerCase();
     }
     filterPokemon(allPokemonDetails, filter, allPokemonMoreDetails)
 }
@@ -142,6 +142,7 @@ async function renderFilteredPokemon(filteredPokemon) {
     let numberToShow = checkNumberToShow(filteredPokemon);
     cardTemplate(numberToShow)
     document.getElementById("show_more").className = `${numberToShow}`;
+    window.scrollTo({top: 0});
 }
 
 function cardTemplate(numberToShow) {

@@ -57,7 +57,7 @@ header {
 
 main {
     margin-top: 88px;
-    margin-bottom: 65px;
+    margin-bottom: 35px;
     padding: 15px 0;
     min-height: calc(100vh - 138px);
     & .ctn {
@@ -148,7 +148,8 @@ main {
 
 footer {
     background-color: rgb(29, 36, 58);
-    padding: 20px 0;
+    font-size: 10px;
+    padding: 10px 0;
     text-align: center;
     border-top: 0.5px rgba(255, 255, 255, 0.75);
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
@@ -500,6 +501,10 @@ footer {
 }
 
 @media(max-width: 400px) {
+    header .ctn{
+        display: flex;
+        gap: 20px;
+    }
     .card_overlay_ctn {
         & .card_overlay {
             & .overlay_card_info {
