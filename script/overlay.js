@@ -9,25 +9,25 @@ function closeOverlay() {
 }
 
 function showOverlayInfoMain() {
-    closeOverlayInfo()
+    closeOverlayInfos()
     document.getElementById("overlay_info_main").style.display = "flex";
     document.getElementById("overlay_menu_main").style.borderBottom = "1px solid white";
 
 }
 
 function showOverlayInfoStats() {
-    closeOverlayInfo()
+    closeOverlayInfos()
     document.getElementById("overlay_info_stats").style.display = "flex";
     document.getElementById("overlay_menu_stats").style.borderBottom = "1px solid white";
 }
 
 function showOverlayInfoEvo() {
-    closeOverlayInfo()
+    closeOverlayInfos()
     document.getElementById("evo_chain").style.display = "flex";
     document.getElementById("overlay_menu_evochain").style.borderBottom = "1px solid white";
 }
 
-function closeOverlayInfo() {
+function closeOverlayInfos() {
     document.getElementById("overlay_info_main").style.display = "none";
     document.getElementById("overlay_info_stats").style.display = "none";
     document.getElementById("evo_chain").style.display = "none";

@@ -23,17 +23,18 @@ async function getData(filter) {
 function startLoadingSpinner() {
     document.getElementById("loadingspinner_ctn").style.display = "flex";
     let loadingText = [".", ".", ".", " ", "l", "o", "a", "d", "i", "n", "g", " ", ".", ".", "."]
-
     for (let i = 0; i < loadingText.length; i++) {
         setTimeout(() => showText(loadingText, i), i * 200)
     }
-
-    setTimeout(() => { 
+    let loadingTextInterval = setInterval(() => { 
         document.getElementById("loading_text").innerHTML = ""
         for (let i = 0; i < loadingText.length; i++) {
             setTimeout(() => showText(loadingText, i), i * 200)
         }
-    }, 3500)
+    }, 3200)
+    setTimeout(function() {
+        clearInterval(loadingTextInterval);
+    }, 10000);
 }
 
 function showText(loadingText, i) {
@@ -222,11 +223,12 @@ function openOverlay(e) {
 
 function oneLeftOrRight(e, oneUpOrDown, filteredPokemon) {
     e.stopPropagation()
-    document.getElementById("card_overlay_ctn").style.display = "flex"
+    
     document.getElementById("toLeft").classList.remove("buttonLeftRight")
     document.getElementById("toRight").classList.remove("buttonLeftRight")
     let currentIndex = Number(document.getElementById("toLeft").className);
     let nextIndex = checkNextIndex(currentIndex, oneUpOrDown, filteredPokemon)
+   
     addClassNamesButtons(nextIndex)
     fillOverlay(nextIndex) 
     document.getElementById("card_overlay").addEventListener("click", function(e) {
@@ -254,6 +256,8 @@ function addClassNamesButtons(nextIndex) {
 
 function fillOverlay(indexOfFilteredPokemon) {
     let thisName = filteredPokemon[indexOfFilteredPokemon].name;
+    document.getElementById("card_overlay_ctn").style.display = "flex"
+    resetAnimationPokemonImg()
     document.getElementById("overlay_number_pokemon").innerText = `#${filteredPokemon[indexOfFilteredPokemon].number}`
     document.getElementById("overlay_name_pokemon").innerText = `${thisName}`
     document.getElementById("imgOverlay").src = `${filteredPokemon[indexOfFilteredPokemon].img}`
@@ -262,9 +266,16 @@ function fillOverlay(indexOfFilteredPokemon) {
     document.getElementById("overlay_card_type_of_pokemon_ctn").innerHTML = pokemonTypes;
     addEventListeners(event)
     setInfoMain(filteredPokemon, indexOfFilteredPokemon)
+    showOverlayInfoMain()
     setInfoStats(filteredPokemon, indexOfFilteredPokemon)
     setEvochainThisPokemon(thisName)
-    showOverlayInfoMain()
+    
+}
+
+function resetAnimationPokemonImg() {
+    document.getElementById("imgOverlay").classList.remove("showPokemonAnimation");
+    void document.getElementById("imgOverlay").offsetWidth;
+    document.getElementById("imgOverlay").classList.add("showPokemonAnimation")
 }
 
 function addClassNamesOverlay(filteredPokemon, indexOfFilteredPokemon) {

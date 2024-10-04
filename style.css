@@ -207,7 +207,6 @@ footer {
             position: relative;
      
             & #imgOverlay {
-                animation: showPokemon 1s ease-in-out;
                 height: 140px;
                 filter: drop-shadow(0px 5px 8px rgba(0, 0, 0, 1));
                 position: absolute;
@@ -268,7 +267,7 @@ footer {
             padding: 15px;
             height: 220px;
             & .overlay_info_main {
-                display: none;
+                display: flex;
                 flex-direction: column;
                 & .description {
                     width: 40%;
@@ -306,7 +305,7 @@ footer {
             }
             & .evo_chain {
                 margin-top: 40px;
-                display: flex;
+                display: none;
                 align-items: center;
                 justify-content: center;
                 & .evo_chain_ctn {
@@ -329,6 +328,10 @@ footer {
     &:hover {
         cursor: pointer;
     }
+}
+
+.showPokemonAnimation {
+    animation: showPokemon 1s ease-in-out;
 }
 
 @keyframes showPokemon {
@@ -394,7 +397,7 @@ footer {
     bottom: 0;
 
     & #loading_img {
-        animation: pokeball 8s;
+        animation: pokeball 10s infinite;
     }
 
     & #loading_text {
@@ -408,23 +411,59 @@ footer {
 @keyframes pokeball {
     0% {
         transform: scale(0.95);
-        opacity: 0.5;
+        filter: grayscale(0.5);
+    }
+    10% {
+        transform: scale(1);
+        filter: grayscale(0);
+    }
+    15% {
+        transform: scale(0.95);
+        filter: grayscale(0.5);
+    }
+    25% {
+        transform: scale(1);
+        filter: grayscale(0);
     }
     30% {
-        transform: scale(1);
-        opacity: 1;
+        transform: scale(0.95);
+        filter: grayscale(0.5);
     }
     40% {
+        transform: scale(1);
+        filter: grayscale(0);
+    }
+    45% {
         transform: scale(0.95);
-        opacity: 0.5;
+        filter: grayscale(0.5);
+    }
+    55% {
+        transform: scale(1);
+        filter: grayscale(0);
+    }
+    60% {
+        transform: scale(0.95);
+        filter: grayscale(0.5);
     }
     70% {
         transform: scale(1);
-        opacity: 1;
+        filter: grayscale(0);
+    }
+    75% {
+        transform: scale(0.95);
+        filter: grayscale(0.5);
+    }
+    85% {
+        transform: scale(1);
+        filter: grayscale(0);
+    }
+    90% {
+        transform: scale(0.95);
+        filter: grayscale(0.5);
     }
     100% {
-        transform: scale(0.95);
-        opacity: 0.5;
+        transform: scale(1);
+        filter: grayscale(0);
     }
 }
 
