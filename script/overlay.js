@@ -13,7 +13,6 @@ function showOverlayInfoMain() {
     closeOverlayInfos()
     document.getElementById("overlay_info_main").style.display = "flex";
     document.getElementById("overlay_menu_main").style.borderBottom = "1px solid white";
-
 }
 
 function showOverlayInfoStats() {
