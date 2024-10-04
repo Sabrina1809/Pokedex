@@ -256,20 +256,26 @@ function addClassNamesButtons(nextIndex) {
 
 function fillOverlay(indexOfFilteredPokemon) {
     let thisName = filteredPokemon[indexOfFilteredPokemon].name;
-    document.getElementById("card_overlay_ctn").style.display = "flex"
-    resetAnimationPokemonImg()
+    let pokemonTypes = setTypesToPokemon(filteredPokemon, indexOfFilteredPokemon)
     document.getElementById("overlay_number_pokemon").innerText = `#${filteredPokemon[indexOfFilteredPokemon].number}`
     document.getElementById("overlay_name_pokemon").innerText = `${thisName}`
     document.getElementById("imgOverlay").src = `${filteredPokemon[indexOfFilteredPokemon].img}`
-    addClassNamesOverlay(filteredPokemon, indexOfFilteredPokemon)
-    let pokemonTypes = setTypesToPokemon(filteredPokemon, indexOfFilteredPokemon)
     document.getElementById("overlay_card_type_of_pokemon_ctn").innerHTML = pokemonTypes;
+    document.getElementById("card_overlay_ctn").style.display = "flex";
+    document.body.style.overflow = "hidden";
+    resetAnimationPokemonImg()
+    addClassNamesOverlay(filteredPokemon, indexOfFilteredPokemon)
     addEventListeners(event)
     setInfoMain(filteredPokemon, indexOfFilteredPokemon)
     showOverlayInfoMain()
+    setStatsColor()
     setInfoStats(filteredPokemon, indexOfFilteredPokemon)
     setEvochainThisPokemon(thisName)
-    
+}
+
+function setStatsColor() {
+    let statsColor = getComputedStyle(document.getElementById("overlay_card_img_pokemon_ctn")).backgroundColor
+    document.documentElement.style.setProperty('--pokemon-type-color', statsColor)
 }
 
 function resetAnimationPokemonImg() {

@@ -6,6 +6,7 @@ function checkPokemonId(e) {
 
 function closeOverlay() {
     document.getElementById("card_overlay_ctn").style.display = "none"
+    document.body.style.overflow = ""
 }
 
 function showOverlayInfoMain() {

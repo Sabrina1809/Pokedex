@@ -1,3 +1,7 @@
+:root {
+    --pokemon-type-color: "";
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -6,6 +10,8 @@
     scroll-behavior: smooth;
     font-family: sans-serif;
 }
+
+
 
 body {
     width: 100%;
@@ -148,15 +154,15 @@ main {
 
 footer {
     background-color: rgb(29, 36, 58);
-    font-size: 10px;
-    padding: 10px 0;
+    /* font-size: 10px; */
+    padding: 20px 0;
     text-align: center;
     border-top: 0.5px rgba(255, 255, 255, 0.75);
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
-    position: fixed;
+    /* position: fixed;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 0; */
 }
 
 .card_overlay_ctn {
@@ -221,10 +227,14 @@ footer {
                 border-radius: 50%;
                 margin: 5px;
                 transition: all 0.2s ease-in-out;
+                background-color:  rgba(255, 255, 255, 0.4);
                 filter: none;
                 &:hover {
                     cursor: pointer;
-                    background-color:  rgba(255, 255, 255, 0.25);
+                    background-color:  rgba(255, 255, 255, 0.6);
+                }
+                &:active {
+                    scale: 0.9;
                 }
             }
         }
@@ -297,7 +307,8 @@ footer {
                             width: 0%;
                             border: 1px solid black;
                             border-radius: 10px;
-                            background-color: rgb(199, 32, 32);
+                            /* background-color: rgb(199, 32, 32); */
+                            background-color: var(--pokemon-type-color);
                             animation: showRedLine 1s ease-in-out;
                         }
                     }
@@ -355,7 +366,8 @@ footer {
     }
     100% {
         transform: translate(0%);
-        background-color: rgb(199, 32, 32);
+          /* background-color: rgb(199, 32, 32); */
+        background-color: var(--pokemon-type-color);
     }
 }
 
