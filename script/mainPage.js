@@ -268,25 +268,52 @@ function fillOverlay(indexOfFilteredPokemon) {
     showOverlayInfoMain()
     setStatsColor()
     setInfoStats(filteredPokemon, indexOfFilteredPokemon)
-    evoThisPokemon(indexOfFilteredPokemon, thisName)
+    pokemonEvolution(allPokemon, thisName)
 }
 
-function evoThisPokemon(indexOfFilteredPokemon, thisName) {
-    let indexOfThisPokemonInAllPokemon = checkThisIndex(thisName)
-    // console.log(`Index großes Array ${thisName} ${indexOfThisPokemonInAllPokemon}`)
-    document.getElementById("thisPokemonImg").src = `${filteredPokemon[indexOfFilteredPokemon].img}`
-    document.getElementById("thisPokemonName").innerHTML = `${thisName}`
-    let nextPokemonName = checkNextPokemon(indexOfThisPokemonInAllPokemon);
-    let nextPokemonIndex = checkNextPokemonIndex(nextPokemonName)
-    let afterNextPokemonName = checkAfterNextPokemon(indexOfThisPokemonInAllPokemon);
-    let afterNextPokemonIndex = checkNextPokemonIndex(afterNextPokemonName)
-    // console.log(`nächster Pokemon ${nextPokemonName}, ${nextPokemonIndex}`)
-    // console.log(`übernächster Pokemon ${afterNextPokemonName}, ${afterNextPokemonIndex}`)
-    // console.log(`Reihenfolge ${thisName}, ${nextPokemonName}, ${afterNextPokemonName}`)
-    checkEvochain(thisName, nextPokemonName, nextPokemonIndex, afterNextPokemonName, afterNextPokemonIndex, indexOfThisPokemonInAllPokemon)
+function pokemonEvolution(allPokemon, thisName) {
+    let indexAllPokemon = checkThisIndex(allPokemon, thisName);
+    let evo1Name = document.getElementById("evo1PokemonName");
+    let evo2Name = document.getElementById("evo2PokemonName");
+    let evo3Name = document.getElementById("evo3PokemonName");
+    evo3Name.innerHTML = allPokemon[indexAllPokemon].chain.evolves_to[0].evolves_to[0].species.name;
+    evo2Name.innerHTML = allPokemon[indexAllPokemon].chain.evolves_to[0].species.name;
+    evo1Name.innerHTML = allPokemon[indexAllPokemon].chain.species.name;
+    let evo1Index = checkThisIndex(allPokemon, evo1Name.innerHTML);
+    let evo2Index = checkThisIndex(allPokemon, evo2Name.innerHTML);
+    let evo3Index = checkThisIndex(allPokemon, evo3Name.innerHTML);
+   
+    setEvoImg(evo1Index, evo2Index, evo3Index)
+    setGrayScale(evo1Name, evo2Name, evo3Name, thisName)
 }
 
-function checkThisIndex(thisName) {
+function openOverlayInEvoChain() {
+    
+}
+ 
+function setEvoImg(evo1Index, evo2Index, evo3Index) {
+    let evo1Img = document.getElementById("evo1PokemonImg");
+    let evo2Img = document.getElementById("evo2PokemonImg");
+    let evo3Img = document.getElementById("evo3PokemonImg");
+    evo1Img.src = allPokemon[evo1Index].sprites.other.home.front_default;
+    evo2Img.src = allPokemon[evo2Index].sprites.other.home.front_default;
+    evo3Img.src = allPokemon[evo3Index].sprites.other.home.front_default;
+}
+
+function setGrayScale(evo1Name, evo2Name, evo3Name, thisName) {
+    document.getElementById("evo1PokemonImg").style.filter = "grayscale(100%)";
+    document.getElementById("evo2PokemonImg").style.filter = "grayscale(100%)";
+    document.getElementById("evo3PokemonImg").style.filter = "grayscale(100%)";
+    if (evo1Name.innerHTML == thisName) {
+        document.getElementById("evo1PokemonImg").style.filter = "grayscale(0%)";
+    } else if (evo2Name.innerHTML == thisName) {
+        document.getElementById("evo2PokemonImg").style.filter = "grayscale(0%)";
+    } else if (evo3Name.innerHTML == thisName) {
+        document.getElementById("evo3PokemonImg").style.filter = "grayscale(0%)";
+    }
+}
+
+function checkThisIndex(allPokemon, thisName) {
     let index;
     for (let i = 0; i < allPokemon.length; i++) {
         if (allPokemon[i].name == thisName) {
@@ -296,61 +323,6 @@ function checkThisIndex(thisName) {
     }
     return index
 } 
-
-function checkNextPokemon(indexOfThisPokemonInAllPokemon) {
-    let nextName = allPokemon[indexOfThisPokemonInAllPokemon].chain.evolves_to[0].species.name;
-    document.getElementById("nextPokemonName").innerHTML = `${nextName}`
-    return nextName
-}
-
-function checkNextPokemonIndex(pokemonName) {
-    let index;
-    for (let i = 0; i < allPokemon.length; i++) {
-        if (allPokemon[i].name == pokemonName) {
-            index = i
-            return index
-        }
-    }
-    console.log(allPokemon[i])
-    return index
-}
-
-function checkAfterNextPokemon(indexOfThisPokemonInAllPokemon) {
-    let afterNextName = allPokemon[indexOfThisPokemonInAllPokemon].chain.evolves_to[0].evolves_to[0].species.name;
-    document.getElementById("afterNextPokemonName").innerHTML = `${afterNextName}`;
-    return afterNextName
-}
-
-
-function checkEvochain(thisName, nextPokemonName, nextPokemonIndex, afterNextPokemonName, afterNextPokemonIndex, indexOfThisPokemonInAllPokemon) {
-    console.log(`this: ${thisName}, next: ${nextPokemonName}, afterNext: ${afterNextPokemonName}`)
-    let evo1Name = document.getElementById("thisPokemonName").innerHTML;
-    let evo2Name = document.getElementById("nextPokemonName").innerHTML;
-    let evo2ImgSrc = allPokemon[nextPokemonIndex].sprites.other.home.front_default
-    let evo3Name = document.getElementById("afterNextPokemonName").innerHTML
-    let evo3ImgSrc = allPokemon[afterNextPokemonIndex].sprites.other.home.front_default
-    console.log(evo1Name, evo2Name, evo3Name)
-
-    if (evo1Name !== evo2Name && evo1Name !== evo3Name) {
-        document.getElementById("nextPokemonImg").src = evo2ImgSrc
-        document.getElementById("afterNextPokemonImg").src = evo3ImgSrc
-    } 
-    if (evo1Name == evo2Name) {
-        evo1Name = allPokemon[indexOfThisPokemonInAllPokemon].evolves_from_species.name;
-        let indexEvo1NamePokemon = checkThisIndex(evo1Name);
-        document.getElementById("thisPokemonName").innerHTML = evo1Name;
-        document.getElementById("thisPokemonImg").src = `${allPokemon[indexEvo1NamePokemon].sprites.other.home.front_default}`
-        document.getElementById("afterNextPokemonImg").src = evo3ImgSrc
-    }
-
-    if(evo1Name == evo3Name) {
-        evo1Name = allPokemon[indexOfThisPokemonInAllPokemon].chain.species.name
-        document.getElementById("thisPokemonName").innerHTML = `${evo1Name}`
-        let indexEvo1NamePokemon = checkThisIndex(evo1Name);
-        document.getElementById("thisPokemonImg").src = `${allPokemon[indexEvo1NamePokemon].sprites.other.home.front_default}`
-    }
-
-}
 
 function setStatsColor() {
     let statsColor = getComputedStyle(document.getElementById("overlay_card_img_pokemon_ctn")).backgroundColor

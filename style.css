@@ -296,11 +296,22 @@ footer {
             & .overlay_info_main {
                 display: flex;
                 flex-direction: column;
+
+            
                 & .description {
                     width: 40%;
                     display: inline-block;
                     margin-bottom: 15px;
+
+                    & #abilities {
+                        display: inline-block;
+                        width: 55%;
+                    }
                 }
+            }
+            & .overlay_info_main > * {
+                display: flex;
+                gap: 5px;
             }
             & .overlay_info_stats {
                 display: none;
@@ -332,11 +343,12 @@ footer {
                 }
             }
             & .evo_chain {
-                margin-top: 40px;
+                height: 100%;
                 display: none;
                 align-items: center;
                 justify-content: center;
                 & .evo_chain_ctn {
+                    gap: 10px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -344,11 +356,37 @@ footer {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
+                        gap: 15px;
                         & img {
+                            margin: 0 auto;
                             height: 70px;
                             width: 70px;
+                            transition: all 0.2s ease-in-out;
+                            align-self: baseline;
+                            &:hover {
+                                cursor: pointer;
+                                scale: 1.2;
+                                filter: grayscale(0%) drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)) !important;
+                            }
                         }
+                        & #evo1PokemonImg {
+                            width: 40px;
+                            height: 40px;
+                            /* scale: 0.7; */
+                        }
+                        & #evo2PokemonImg {
+                            width: 70px;
+                            height: 70px;
+                            /* scale: 1.0; */
+                        }
+                        & #evo3PokemonImg {
+                            width: 130px;
+                            height: 130px;
+                        }
+                       
                     }
+                        
+                    
                 }
             }
         }
